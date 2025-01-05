@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/4/5 18:50
-@Author  : thezehui@gmail.com
-@File    : default_config.py
-"""
+
 # 应用默认配置项
 DEFAULT_CONFIG = {
     # wft配置

@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/4/6 21:08
-@Author  : thezehui@gmail.com
-@File    : sqlalchemy.py
-"""
+
 from contextlib import contextmanager
 
 from flask_sqlalchemy import SQLAlchemy as _SQAlchemy

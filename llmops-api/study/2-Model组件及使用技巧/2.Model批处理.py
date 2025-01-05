@@ -8,6 +8,7 @@
 from datetime import datetime
 
 import dotenv
+from langchain_community.chat_models import QianfanChatEndpoint
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 
@@ -20,7 +21,8 @@ prompt = ChatPromptTemplate.from_messages([
 ]).partial(now=datetime.now())
 
 # 2.创建大语言模型
-llm = ChatOpenAI(model="gpt-3.5-turbo-16k")
+# llm = ChatOpenAI(model="gpt-3.5-turbo-16k")
+llm = QianfanChatEndpoint(model="ChatGLM2-6B-32K")
 
 ai_messages = llm.batch([
     prompt.invoke({"query": "你好，你是?"}),

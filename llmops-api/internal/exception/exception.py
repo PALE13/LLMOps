@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/4/2 14:19
-@Author  : thezehui@gmail.com
-@File    : exception.py
-"""
+
 from dataclasses import field
 from typing import Any
 

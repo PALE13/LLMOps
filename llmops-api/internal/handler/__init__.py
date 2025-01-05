@@ -5,6 +5,12 @@
 @Author  : thezehui@gmail.com
 @File    : __init__.py.py
 """
+from .api_tool_handler import ApiToolHandler
 from .app_handler import AppHandler
+from .builtin_tool_handler import BuiltinToolHandler
 
-__all__ = ["AppHandler"]
+__all__ = [
+    "AppHandler",
+    "BuiltinToolHandler",
+    "ApiToolHandler",
+]

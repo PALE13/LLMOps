@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/4/1 19:26
-@Author  : thezehui@gmail.com
-@File    : __init__.py.py
-"""
+
 from .http_code import HttpCode
 from .response import (
     Response,

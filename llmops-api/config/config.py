@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/4/1 14:50
-@Author  : thezehui@gmail.com
-@File    : config.py
-"""
+
 import os
 from typing import Any
 

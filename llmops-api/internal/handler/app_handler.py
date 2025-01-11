@@ -17,11 +17,13 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda, RunnableConfig
 from langchain_core.tracers import Run
 from langchain_openai import ChatOpenAI
+from openai import embeddings
 
 from internal.schema.app_schema import CompletionReq
-from internal.service import AppService, ApiToolService
+from internal.service import AppService, ApiToolService, EmbeddingsService
 from internal.service.vector_database_service import VectorDatabaseService
 from pkg.response import success_json, validate_error_json, success_message
+from internal.task.demo_task import demo_task
 
 
 @inject
@@ -31,6 +33,7 @@ class AppHandler:
     app_service: AppService
     vector_database_service: VectorDatabaseService
     api_tool_service: ApiToolService
+    embedding_service: EmbeddingsService
 
 
     def create_app(self):
@@ -120,5 +123,4 @@ class AppHandler:
         return "\n\n".join([document.page_content for document in documents])
 
     def ping(self):
-        return self.api_tool_service.api_tool_invoke()
-
+        pass

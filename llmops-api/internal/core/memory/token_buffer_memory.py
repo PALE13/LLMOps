@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/10/01 13:51
-@Author  : thezehui@gmail.com
-@File    : token_buffer_memory.py
-"""
+
 from dataclasses import dataclass
 
 from langchain_core.language_models import BaseLanguageModel

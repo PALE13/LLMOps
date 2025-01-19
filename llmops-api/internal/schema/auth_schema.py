@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/10/25 0:21
-@Author  : thezehui@gmail.com
-@File    : auth_schema.py
-"""
+
 from flask_wtf import FlaskForm
 from marshmallow import Schema, fields
 from wtforms import StringField

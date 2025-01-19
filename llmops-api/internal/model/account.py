@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/10/25 9:16
-@Author  : thezehui@gmail.com
-@File    : account.py
-"""
+
 from flask_login import UserMixin
 from sqlalchemy import (
     Column,

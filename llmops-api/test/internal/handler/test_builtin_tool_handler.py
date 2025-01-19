@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/7/28 11:05
-@Author  : thezehui@gmail.com
-@File    : test_builtin_tool_handler.py
-"""
+
 import pytest
 
 from pkg.response import HttpCode

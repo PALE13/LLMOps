@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/10/25 14:56
-@Author  : thezehui@gmail.com
-@File    : github_oauth.py
-"""
+
 import urllib.parse
 
 import requests

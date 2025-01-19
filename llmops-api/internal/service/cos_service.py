@@ -13,7 +13,7 @@ from werkzeug.datastructures import FileStorage
 
 from internal.entity.upload_file_entity import ALLOWED_IMAGE_EXTENSION, ALLOWED_DOCUMENT_EXTENSION
 from internal.exception import FailException
-from internal.model import UploadFile
+from internal.model import UploadFile, Account
 from .upload_file_service import UploadFileService
 
 
@@ -23,10 +23,13 @@ class CosService:
     """腾讯云cos对象存储服务"""
     upload_file_service: UploadFileService
 
-    def upload_file(self, file: FileStorage, only_image: bool = False) -> UploadFile:
+    def upload_file(
+            self,
+            file: FileStorage,
+            only_image: bool,
+            account: Account
+    ) -> UploadFile:
         """上传文件到腾讯云cos对象存储，上传后返回文件的信息"""
-        # todo:等待授权认证模块完成进行切换调整
-        account_id = "46db30d1-3199-4e79-a0cd-abf12fa6858f"
 
         # 1.提取文件扩展名并检测是否可以上传
         filename = file.filename
@@ -56,7 +59,7 @@ class CosService:
 
         # 6.创建upload_file记录
         return self.upload_file_service.create_upload_file(
-            account_id=account_id,
+            account_id=account.id,
             name=filename,
             key=upload_filename,
             size=len(file_content),

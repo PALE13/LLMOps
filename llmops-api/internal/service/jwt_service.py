@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/10/25 22:33
-@Author  : thezehui@gmail.com
-@File    : jwt_service.py
-"""
+
 import os
 from dataclasses import dataclass
 from typing import Any

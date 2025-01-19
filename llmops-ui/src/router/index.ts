@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { isLogin } from '@/utils/auth'
+import auth from '@/utils/auth'
 import DefaultLayout from '@/views/layouts/DefaultLayout.vue'
 import BlankLayout from '@/views/layouts/BlankLayout.vue'
 
@@ -46,6 +46,21 @@ const router = createRouter({
           ],
         },
         {
+          path: 'space/datasets/:dataset_id/documents',
+          name: 'space-datasets-documents-list',
+          component: () => import('@/views/space/datasets/documents/ListView.vue'),
+        },
+        {
+          path: 'space/datasets/:dataset_id/documents/create',
+          name: 'space-datasets-documents-create',
+          component: () => import('@/views/space/datasets/documents/CreateView.vue'),
+        },
+        {
+          path: 'space/datasets/:dataset_id/documents/:document_id/segments',
+          name: 'space-datasets-documents-segments-list',
+          component: () => import('@/views/space/datasets/documents/segments/ListView.vue'),
+        },
+        {
           path: 'store/apps',
           name: 'store-apps-list',
           component: () => import('@/views/store/apps/ListView.vue'),
@@ -72,6 +87,11 @@ const router = createRouter({
           component: () => import('@/views/auth/LoginView.vue'),
         },
         {
+          path: 'auth/authorize/:provider_name',
+          name: 'auth-authorize',
+          component: () => import('@/views/auth/AuthorizeView.vue'),
+        },
+        {
           path: 'space/apps/:app_id',
           name: 'space-apps-detail',
           component: () => import('@/views/space/apps/DetailView.vue'),
@@ -81,9 +101,8 @@ const router = createRouter({
   ],
 })
 
-// todo:路由守卫逻辑还未实现
 router.beforeEach(async (to, from) => {
-  if (!isLogin() && to.name != 'auth-login') {
+  if (!auth.isLogin() && !['auth-login', 'auth-authorize'].includes(to.name as string)) {
     return { path: '/auth/login' }
   }
 })

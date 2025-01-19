@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/10/25 10:49
-@Author  : thezehui@gmail.com
-@File    : account_service.py
-"""
+
 import base64
 import secrets
 from dataclasses import dataclass

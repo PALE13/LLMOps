@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/10/25 16:50
-@Author  : thezehui@gmail.com
-@File    : oauth_service.py
-"""
+
 import os
 from dataclasses import dataclass
 from datetime import datetime, timedelta

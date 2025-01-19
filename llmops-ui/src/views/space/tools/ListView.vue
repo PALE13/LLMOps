@@ -284,7 +284,7 @@ watch(
               <icon-user />
             </a-avatar>
             <div class="text-xs text-gray-400">
-              慕小课 · 编辑时间
+              管理员 · 编辑时间
               {{ moment(provider.created_at).format('MM-DD HH:mm') }}
             </div>
           </div>

@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router'
 import { Message } from '@arco-design/web-vue'
 import { debugApp } from '@/services/app'
 
-// 1.定义交互所需的数据
 const query = ref('')
 const messages = ref<any[]>([])
 const isLoading = ref(false)
@@ -15,18 +14,15 @@ const clearMessages = () => {
 }
 
 const send = async () => {
-  // 获取用户输入数据，并校验是否存在
   if (!query.value) {
     Message.error('用户提问不能为空')
     return
   }
-  // 如果上一次请求还未结束，则提示用户稍等
   if (isLoading.value) {
     Message.warning('上一次回复还未结束，请稍等')
     return
   }
 
-  // 提取用户输入信息
   try {
     const humanQuery = query.value
     messages.value.push({
@@ -36,12 +32,25 @@ const send = async () => {
     query.value = ''
     isLoading.value = true
 
-    const response = await debugApp(route.params.app_id as string, humanQuery)
-    const content = response.data.content
-
     messages.value.push({
       role: 'ai',
-      content: content,
+      content: '',
+    })
+
+    await debugApp(route.params.app_id as string, humanQuery, (event_response) => {
+      // 1.提取流式事件响应数据以及事件名称
+      const event = event_response?.event
+      const data = event_response?.data
+
+      // 2.获取最后一条消息
+      const lastIndex = messages.value.length - 1
+      let message = messages.value[lastIndex]
+
+      // todo: 3.暂时只处理agent_message事件，其他事件类型等接口开发完毕后添加
+      if (event === 'agent_message') {
+        // let chunk_content = data?.data
+        messages.value[lastIndex].content = message.content + data.answer
+      }
     })
   } finally {
     isLoading.value = false
@@ -87,7 +96,7 @@ const send = async () => {
               class="flex-shrink-0"
               :size="30"
             >
-              周
+              慕
             </a-avatar>
             <a-avatar
               v-else
@@ -100,7 +109,7 @@ const send = async () => {
             <!-- 实际消息 -->
             <div class="flex flex-col gap-2">
               <div class="font-semibold text-gray-700">
-                {{ message.role === 'human' ? '周小彬' : '聊天机器人' }}
+                {{ message.role === 'human' ? '周瑞彬' : 'ChatGPT聊天机器人' }}
               </div>
               <div
                 v-if="message.role === 'human'"
@@ -113,6 +122,7 @@ const send = async () => {
                 class="max-w-max bg-gray-100 text-gray-900 border border-gray-200 px-4 py-3 rounded-2xl leading-5"
               >
                 {{ message.content }}
+                <div v-if="isLoading" class="cursor"></div>
               </div>
             </div>
           </div>
@@ -124,23 +134,7 @@ const send = async () => {
             <a-avatar :size="70" shape="square" :style="{ backgroundColor: '#00d0b6' }">
               <icon-apps />
             </a-avatar>
-            <div class="text-2xl font-semibold text-gray-900">聊天机器人</div>
-          </div>
-          <!-- AI加载状态 -->
-          <div v-if="isLoading" class="flex flex-row gap-2 mb-6">
-            <!-- 头像 -->
-            <a-avatar :style="{ backgroundColor: '#00d0b6' }" class="flex-shrink-0" :size="30">
-              <icon-apps />
-            </a-avatar>
-            <!-- 实际消息 -->
-            <div class="flex flex-col gap-2">
-              <div class="font-semibold text-gray-700">ChatGPT聊天机器人</div>
-              <div
-                class="max-w-max bg-gray-100 text-gray-900 border border-gray-200 px-4 py-3 rounded-2xl leading-5"
-              >
-                <icon-loading />
-              </div>
-            </div>
+            <div class="text-2xl font-semibold text-gray-900">ChatGPT聊天机器人</div>
           </div>
         </div>
         <!-- 调试对话输入框 -->
@@ -180,4 +174,23 @@ const send = async () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.cursor {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background-color: #444444;
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1; /* 显示 */
+  }
+  50% {
+    opacity: 0; /* 隐藏 */
+  }
+}
+</style>

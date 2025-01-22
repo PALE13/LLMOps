@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/11/02 10:53
-@Author  : thezehui@gmail.com
-@File    : ai_service.py
-"""
+
 import json
 from dataclasses import dataclass
 from typing import Generator

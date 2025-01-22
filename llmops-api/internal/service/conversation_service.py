@@ -73,8 +73,8 @@ class ConversationService(BaseService):
         # 6.提取会话名称
         name = "新的会话"
         try:
-            if conversation_info and hasattr(conversation_info, "subject"):
-                name = conversation_info.subject
+            if conversation_info and "subject" in conversation_info:
+                name = conversation_info["subject"]
         except Exception as e:
             logging.exception(f"提取会话名称出错, conversation_info: {conversation_info}, 错误信息: {str(e)}")
         if len(name) > 75:
@@ -104,8 +104,8 @@ class ConversationService(BaseService):
         # 5.提取建议问题列表
         questions = []
         try:
-            if suggested_questions and hasattr(suggested_questions, "questions"):
-                questions = suggested_questions.questions
+            if suggested_questions and "questions" in suggested_questions:
+                questions = suggested_questions["questions"]
         except Exception as e:
             logging.exception(f"生成建议问题出错, suggested_questions: {suggested_questions}, 错误信息: {str(e)}")
         if len(questions) > 3:

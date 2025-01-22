@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/11/02 10:46
-@Author  : thezehui@gmail.com
-@File    : ai_schema.py
-"""
+
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired, UUID, Length

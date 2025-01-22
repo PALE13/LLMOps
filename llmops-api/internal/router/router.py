@@ -16,7 +16,8 @@ from internal.handler import (
     SegmentHandler,
     OAuthHandler,
     AuthHandler,
-    AccountHandler
+    AccountHandler,
+    AIHandler
 )
 
 
@@ -34,6 +35,7 @@ class Router:
     oauth_handler: OAuthHandler
     auth_handler: AuthHandler
     account_handler: AccountHandler
+    ai_handler: AIHandler
 
     def register_router(self, app: Flask):
         """注册路由"""
@@ -43,22 +45,85 @@ class Router:
         # 应用管理模块
         bp.add_url_rule(
             "/ping",
-            view_func=self.app_handler.ping)
+            view_func=self.app_handler.ping
+        )
         bp.add_url_rule(
-            "/apps/<uuid:app_id>/debug",
-            methods=["POST"], view_func=self.app_handler.debug)
+            "/apps",
+            methods=["POST"], view_func=self.app_handler.create_app
+        )
         bp.add_url_rule(
-            "/app",
-            methods=["POST"], view_func=self.app_handler.create_app)
+            "/apps/<uuid:app_id>",
+            view_func=self.app_handler.get_app
+        )
         bp.add_url_rule(
-            "/app/<uuid:id>",
-            view_func=self.app_handler.get_app)
+            "/apps/<uuid:app_id>/draft-app-config",
+            view_func=self.app_handler.get_draft_app_config
+        )
         bp.add_url_rule(
-            "/app/<uuid:id>",
-            methods=["POST"], view_func=self.app_handler.update_app)
+            "/apps/<uuid:app_id>/draft-app-config",
+            methods=["POST"],view_func=self.app_handler.update_draft_app_config,
+        )
         bp.add_url_rule(
-            "/app/<uuid:id>/delete",
-            methods=["POST"], view_func=self.app_handler.delete_app)
+            "/apps/<uuid:app_id>/publish",
+            methods=["POST"],
+            view_func=self.app_handler.publish,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/cancel-publish",
+            methods=["POST"],
+            view_func=self.app_handler.cancel_publish,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/publish-histories",
+            view_func=self.app_handler.get_publish_histories_with_page,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/fallback-history",
+            methods=["POST"],
+            view_func=self.app_handler.fallback_history_to_draft,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/summary",
+            view_func=self.app_handler.get_debug_conversation_summary,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/summary",
+            methods=["POST"],
+            view_func=self.app_handler.update_debug_conversation_summary,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/conversations/delete-debug-conversation",
+            methods=["POST"],
+            view_func=self.app_handler.delete_debug_conversation,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/conversations",
+            methods=["POST"],
+            view_func=self.app_handler.debug_chat,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/conversations/tasks/<uuid:task_id>/stop",
+            methods=["POST"],
+            view_func=self.app_handler.stop_debug_chat,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/conversations/messages",
+            view_func=self.app_handler.get_debug_conversation_messages_with_page,
+        )
+
+
+        # AI辅助模块
+        bp.add_url_rule(
+            "/ai/optimize-prompt",
+            methods=["POST"], view_func=self.ai_handler.optimize_prompt
+        )
+        bp.add_url_rule(
+            "/ai/suggested-questions",
+            methods=["POST"],view_func=self.ai_handler.generate_suggested_questions,
+        )
+
+
+
 
         # 内置插件广场模块
         bp.add_url_rule(

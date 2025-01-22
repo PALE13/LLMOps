@@ -3,6 +3,7 @@ import {
   type CreateDatasetRequest,
   type CreateDocumentsRequest,
   type CreateDocumentsResponse,
+  type CreateSegmentRequest,
   type GetDatasetQueriesResponse,
   type GetDatasetResponse,
   type GetDatasetsWithPageResponse,
@@ -10,9 +11,13 @@ import {
   type GetDocumentsStatusResponse,
   type GetDocumentsWithPageRequest,
   type GetDocumentsWithPageResponse,
+  type GetSegmentResponse,
+  type GetSegmentsWithPageRequest,
+  type GetSegmentsWithPageResponse,
   type HitRequest,
   type HitResponse,
   type UpdateDatasetRequest,
+  type UpdateSegmentRequest,
 } from '@/models/dataset'
 import { type BaseResponse } from '@/models/base'
 
@@ -112,7 +117,7 @@ export const createDocuments = (dataset_id: string, req: CreateDocumentsRequest)
   })
 }
 
-// 根据批处理获取文档的处理状态
+// 根据批处理标识获取文档的处理状态
 export const getDocumentsStatus = (dataset_id: string, batch: string) => {
   return get<GetDocumentsStatusResponse>(`/datasets/${dataset_id}/documents/batch/${batch}`)
 }

@@ -114,62 +114,72 @@ export const ssePost = async (
 
   // 5.4 发起fetch请求并处理流式事件响应
   const response = await globalThis.fetch(urlWithPrefix, options as RequestInit)
-  return handleStream(response, onData)
+  return await handleStream(response, onData)
 }
 
-const handleStream = (response: Response, onData: (data: { [key: string]: any }) => void) => {
-  // 1.检测网络请求是否正常
-  if (!response.ok) throw new Error('网络请求失败')
+const handleStream = (
+  response: Response,
+  onData: (data: Record<string, any>) => void,
+): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    // 1.检测网络请求是否正常
+    if (!response.ok) {
+      reject(new Error('网络请求失败'))
+      return
+    }
 
-  // 2.构建reader以及deocder
-  const reader = response.body?.getReader()
-  const decoder = new TextDecoder('utf-8')
-  let buffer = ''
+    // 2.构建reader以及deocder
+    const reader = response.body?.getReader()
+    const decoder = new TextDecoder('utf-8')
+    let buffer = ''
 
-  // 3.构建read函数用于去读取数据
-  const read = () => {
-    let hasError = false
-    reader?.read().then((result: any) => {
-      if (result.done) return
+    // 3.构建read函数用于去读取数据
+    const read = () => {
+      reader?.read().then((result: any) => {
+        if (result.done) {
+          resolve()
+          return
+        }
 
-      buffer += decoder.decode(result.value, { stream: true })
-      const lines = buffer.split('\n')
+        buffer += decoder.decode(result.value, { stream: true })
+        const lines = buffer.split('\n')
 
-      let event = ''
-      let data = ''
+        let event = ''
+        let data = ''
 
-      try {
-        lines.forEach((line) => {
-          line = line.trim()
-          if (line.startsWith('event:')) {
-            event = line.slice(6).trim()
-          } else if (line.startsWith('data:')) {
-            data = line.slice(5).trim()
-          }
-
-          // 每个事件以空行结束，只有event和data同时存在，才表示一次流式事件的数据完整获取到了
-          if (line === '') {
-            if (event !== '' && data !== '') {
-              onData({
-                event: event,
-                data: JSON.parse(data),
-              })
-              event = ''
-              data = ''
+        try {
+          lines.forEach((line) => {
+            line = line.trim()
+            if (line.startsWith('event:')) {
+              event = line.slice(6).trim()
+            } else if (line.startsWith('data:')) {
+              data = line.slice(5).trim()
             }
-          }
-        })
-        buffer = lines.pop() || ''
-      } catch (e) {
-        hasError = true
-      }
 
-      if (!hasError) read()
-    })
-  }
+            // 每个事件以空行结束，只有event和data同时存在，才表示一次流式事件的数据完整获取到了
+            if (line === '') {
+              if (event !== '' && data !== '') {
+                onData({
+                  event: event,
+                  data: JSON.parse(data),
+                })
+                event = ''
+                data = ''
+              }
+            }
+          })
+          buffer = lines.pop() || ''
+        } catch (e) {
+          reject(e)
+        }
 
-  // 4.调用read函数去执行获取对应的数据
-  read()
+        read()
+      })
+    }
+
+    // 4.调用read函数去执行获取对应的数据
+    read()
+  })
 }
 
 export const upload = <T>(url: string, options: any = {}): Promise<T> => {

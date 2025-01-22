@@ -11,7 +11,6 @@ const loading = ref<boolean>(false)
 const category = ref<string>('all')
 const search_word = ref<string>('')
 const showIdx = ref<number>(-1)
-
 const filterProviders = computed(() => {
   return providers.filter((item) => {
     // 分别检索分类信息+搜索词，只有同时符合的时候才返回数据
@@ -113,8 +112,8 @@ onMounted(async () => {
                 <icon-user />
               </a-avatar>
               <div class="text-xs text-gray-400">
-                管理员 · 发布时间
-                {{ moment(provider.created_at).format('MM-DD HH:mm') }}
+                慕课 · 发布时间
+                {{ moment(provider.created_at * 1000).format('MM-DD HH:mm') }}
               </div>
             </div>
           </a-card>

@@ -9,6 +9,7 @@ import {
   updateApiToolProvider,
   validateOpenAPISchema,
 } from '@/services/api-tool'
+import { uploadImage } from '@/services/upload-file'
 import { type CreateApiToolProviderRequest } from '@/models/api-tool'
 import moment from 'moment/moment'
 import { typeMap } from '@/config'
@@ -30,7 +31,8 @@ const paginator = reactive({
   total_record: 0,
 })
 const form = reactive({
-  icon: 'https://picsum.photos/400',
+  fileList: [],
+  icon: '',
   name: '',
   openapi_schema: '',
   headers: [] as { key: string; value: string }[],
@@ -69,9 +71,7 @@ const tools = computed(() => {
       }
     }
     return available_tools
-  } catch (e) {
-    console.log('解析openapi_schema出错')
-  }
+  } catch (e) {}
   return []
 })
 
@@ -152,6 +152,7 @@ const handleUpdate = async () => {
 
     // 3.更新form表单数据
     formRef.value?.resetFields()
+    form.fileList = [{ uid: '1', name: '插件图标', url: data.icon }]
     form.icon = data.icon
     form.name = data.name
     form.openapi_schema = data.openapi_schema
@@ -284,8 +285,8 @@ watch(
               <icon-user />
             </a-avatar>
             <div class="text-xs text-gray-400">
-              管理员 · 编辑时间
-              {{ moment(provider.created_at).format('MM-DD HH:mm') }}
+              慕小课 · 编辑时间
+              {{ moment(provider.created_at * 1000).format('MM-DD HH:mm') }}
             </div>
           </div>
         </a-card>
@@ -299,7 +300,7 @@ watch(
       </a-col>
     </a-row>
     <!-- 加载器 -->
-    <a-row v-if="providers.length > 0">
+    <a-row v-if="paginator.total_page >= 2">
       <!-- 加载数据中 -->
       <a-col v-if="paginator.current_page <= paginator.total_page" :span="24" align="center">
         <a-space class="my-4">
@@ -418,16 +419,31 @@ watch(
       <div class="pt-6">
         <a-form ref="formRef" :model="form" @submit="handleSubmit" layout="vertical">
           <a-form-item
-            field="icon"
+            field="fileList"
             hide-label
             :rules="[{ required: true, message: '插件图标不能为空' }]"
           >
             <a-upload
-              v-model="form.icon"
               :limit="1"
               list-type="picture-card"
               accept="image/png, image/jpeg"
               class="!w-auto mx-auto"
+              v-model:file-list="form.fileList"
+              image-preview
+              :custom-request="
+                async (option) => {
+                  const { fileItem, onSuccess, onError } = option
+                  const resp = await uploadImage(fileItem.file as File)
+                  form.icon = resp.data.image_url
+                  onSuccess(resp)
+                }
+              "
+              :on-before-remove="
+                () => {
+                  form.icon = ''
+                  return true
+                }
+              "
             />
           </a-form-item>
           <a-form-item

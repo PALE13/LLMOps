@@ -125,12 +125,12 @@ export type GetDatasetQueriesResponse = BaseResponse<
   }>
 >
 
-// 上传文档列表到知识库请求结构
+// 上传文档列表到知识库的请求结构
 export type CreateDocumentsRequest = {
   upload_file_ids: string[]
   process_type: string
   rule: {
-    pre_process_rule: {
+    pre_process_rules: {
       id: string
       enabled: boolean
     }[]
@@ -142,14 +142,14 @@ export type CreateDocumentsRequest = {
   }
 }
 
-// 上传文档列表到知识库响应结构
+// 上传文档列表到知识库的响应结构
 export type CreateDocumentsResponse = BaseResponse<{
   batch: string
   documents: {
     id: string
     name: string
     status: string
-    created_at: string
+    created_at: number
   }[]
 }>
 
@@ -164,8 +164,8 @@ export type GetDocumentsStatusResponse = BaseResponse<
     position: number
     segment_count: number
     completed_segment_count: number
-    error: string
     status: string
+    error: string
     processing_started_at: number
     parsing_completed_at: number
     splitting_completed_at: number

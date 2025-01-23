@@ -34,7 +34,7 @@ class TokenBufferMemory:
             Message.conversation_id == self.conversation.id,
             Message.answer != "",
             Message.is_deleted == False,
-            Message.status == MessageStatus.NORMAL,
+            Message.status.in_([MessageStatus.NORMAL, MessageStatus.STOP, MessageStatus.TIMEOUT]),
         ).order_by(desc("created_at")).limit(message_limit).all()
         messages = list(reversed(messages))
 
@@ -52,6 +52,8 @@ class TokenBufferMemory:
             max_tokens=max_token_limit,
             token_counter=self.model_instance,
             strategy="last",
+            start_on="human",
+            end_on="ai",
         )
 
     def get_history_prompt_text(

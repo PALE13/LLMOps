@@ -17,7 +17,9 @@ from internal.handler import (
     OAuthHandler,
     AuthHandler,
     AccountHandler,
-    AIHandler
+    AIHandler,
+    ApiKeyHandler,
+    OpenAPIHandler,
 )
 
 
@@ -36,11 +38,14 @@ class Router:
     auth_handler: AuthHandler
     account_handler: AccountHandler
     ai_handler: AIHandler
+    api_key_handler: ApiKeyHandler
+    openapi_handler: OpenAPIHandler
 
     def register_router(self, app: Flask):
         """注册路由"""
         # 创建一个蓝图
         bp = Blueprint("llmops", __name__, url_prefix="")
+        openapi_bp = Blueprint("openapi", __name__, url_prefix="")
 
         # 应用管理模块
         bp.add_url_rule(
@@ -318,5 +323,39 @@ class Router:
             methods=["POST"], view_func=self.account_handler.update_avatar
         )
 
+        #开放API模块
+        bp.add_url_rule(
+            "/openapi/api-keys",
+            view_func=self.api_key_handler.get_api_keys_with_page
+        )
+        bp.add_url_rule(
+            "/openapi/api-keys",
+            methods=["POST"],
+            view_func=self.api_key_handler.create_api_key,
+        )
+        bp.add_url_rule(
+            "/openapi/api-keys/<uuid:api_key_id>",
+            methods=["POST"],
+            view_func=self.api_key_handler.update_api_key,
+        )
+        bp.add_url_rule(
+            "/openapi/api-keys/<uuid:api_key_id>/is-active",
+            methods=["POST"],
+            view_func=self.api_key_handler.update_api_key_is_active,
+        )
+        bp.add_url_rule(
+            "/openapi/api-keys/<uuid:api_key_id>/delete",
+            methods=["POST"],
+            view_func=self.api_key_handler.delete_api_key,
+        )
+        openapi_bp.add_url_rule(
+            "/openapi/chat",
+            methods=["POST"],
+            view_func=self.openapi_handler.chat,
+        )
+
+
+
         # 在应用上去注册蓝图
         app.register_blueprint(bp)
+        app.register_blueprint(openapi_bp)

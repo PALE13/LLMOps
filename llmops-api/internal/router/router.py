@@ -20,6 +20,7 @@ from internal.handler import (
     AIHandler,
     ApiKeyHandler,
     OpenAPIHandler,
+    BuiltinAppHandler,
 )
 
 
@@ -40,6 +41,7 @@ class Router:
     ai_handler: AIHandler
     api_key_handler: ApiKeyHandler
     openapi_handler: OpenAPIHandler
+    builtin_app_handler: BuiltinAppHandler
 
     def register_router(self, app: Flask):
         """注册路由"""
@@ -60,6 +62,24 @@ class Router:
             "/apps/<uuid:app_id>",
             view_func=self.app_handler.get_app
         )
+        bp.add_url_rule(
+            "/apps",
+            view_func=self.app_handler.get_apps_with_page
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>",
+            methods=["POST"], view_func=self.app_handler.update_app
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/delete",
+            methods=["POST"], view_func=self.app_handler.delete_app
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/copy",
+            methods=["POST"], view_func=self.app_handler.copy_app
+        )
+
+        # 应用配置模块
         bp.add_url_rule(
             "/apps/<uuid:app_id>/draft-app-config",
             view_func=self.app_handler.get_draft_app_config
@@ -114,6 +134,20 @@ class Router:
         bp.add_url_rule(
             "/apps/<uuid:app_id>/conversations/messages",
             view_func=self.app_handler.get_debug_conversation_messages_with_page,
+        )
+
+        # 内置应用广场模块
+        bp.add_url_rule(
+            "/builtin-apps/categories",
+            view_func=self.builtin_app_handler.get_builtin_app_categories
+        )
+        bp.add_url_rule(
+            "/builtin-apps",
+            view_func=self.builtin_app_handler.get_builtin_apps
+        )
+        bp.add_url_rule(
+            "/builtin-apps/add-builtin-app-to-space",
+            methods=["POST"],view_func=self.builtin_app_handler.add_builtin_app_to_space
         )
 
 

@@ -124,7 +124,7 @@ export const useCreateOrUpdateDataset = () => {
   // 1.定义新增和更新需要使用的数据
   const loading = ref(false)
   const defaultForm = {
-    fileList: [],
+    fileList: [] as any,
     icon: '',
     name: '',
     description: '',

@@ -205,6 +205,6 @@ class ConversationService(BaseService):
                     self.update(
                         message,
                         status=agent_thought.event,
-                        observation=agent_thought.observation,
+                        error=agent_thought.observation
                     )
                     break

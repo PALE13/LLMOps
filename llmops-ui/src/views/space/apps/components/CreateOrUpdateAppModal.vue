@@ -146,7 +146,7 @@ watch(
         >
           <a-input v-model:model-value="form.name" placeholder="请输入应用名称" />
         </a-form-item>
-        <a-form-item field="content" label="应用描述">
+        <a-form-item field="description" label="应用描述">
           <a-textarea
             v-model:model-value="form.description"
             :auto-size="{ minRows: 8, maxRows: 8 }"

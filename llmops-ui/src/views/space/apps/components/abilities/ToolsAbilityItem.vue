@@ -527,7 +527,7 @@ const isToolSelected = (provider, tool) => {
           class="flex flex-col flex-shrink-0 bg-gray-50 w-[200px] h-full px-3 py-4 overflow-scroll scrollbar-w-none"
         >
           <!-- 标题 -->
-          <div class="text-gray-900 font-bold text-lg mb-4">添加插件</div>
+          <div class="text-gray-900 font-bold text-lg mb-4">关联插件</div>
           <!-- 添加插件按钮 -->
           <router-link :to="{ name: 'space-tools-list' }">
             <a-button long type="primary" class="rounded-lg mb-5">创建自定义插件</a-button>

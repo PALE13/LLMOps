@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/7/19 17:01
-@Author  : thezehui@gmail.com
-@File    : builtin_provider_manager.py
-"""
+
 import os.path
 from typing import Any
 

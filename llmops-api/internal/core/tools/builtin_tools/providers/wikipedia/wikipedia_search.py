@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/7/19 21:29
-@Author  : thezehui@gmail.com
-@File    : wikipedia_search.py.py
-"""
+
 from langchain_community.tools.wikipedia.tool import WikipediaQueryInput, WikipediaQueryRun
 from langchain_community.utilities import WikipediaAPIWrapper
 from langchain_core.tools import BaseTool

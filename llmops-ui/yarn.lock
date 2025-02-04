@@ -54,6 +54,116 @@
     "@babel/helper-validator-identifier" "^7.25.7"
     to-fast-properties "^2.0.0"
 
+"@esbuild/aix-ppc64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/aix-ppc64/-/aix-ppc64-0.21.5.tgz#c7184a326533fcdf1b8ee0733e21c713b975575f"
+  integrity sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==
+
+"@esbuild/android-arm64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/android-arm64/-/android-arm64-0.21.5.tgz#09d9b4357780da9ea3a7dfb833a1f1ff439b4052"
+  integrity sha512-c0uX9VAUBQ7dTDCjq+wdyGLowMdtR/GoC2U5IYk/7D1H1JYC0qseD7+11iMP2mRLN9RcCMRcjC4YMclCzGwS/A==
+
+"@esbuild/android-arm@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/android-arm/-/android-arm-0.21.5.tgz#9b04384fb771926dfa6d7ad04324ecb2ab9b2e28"
+  integrity sha512-vCPvzSjpPHEi1siZdlvAlsPxXl7WbOVUBBAowWug4rJHb68Ox8KualB+1ocNvT5fjv6wpkX6o/iEpbDrf68zcg==
+
+"@esbuild/android-x64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/android-x64/-/android-x64-0.21.5.tgz#29918ec2db754cedcb6c1b04de8cd6547af6461e"
+  integrity sha512-D7aPRUUNHRBwHxzxRvp856rjUHRFW1SdQATKXH2hqA0kAZb1hKmi02OpYRacl0TxIGz/ZmXWlbZgjwWYaCakTA==
+
+"@esbuild/darwin-arm64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/darwin-arm64/-/darwin-arm64-0.21.5.tgz#e495b539660e51690f3928af50a76fb0a6ccff2a"
+  integrity sha512-DwqXqZyuk5AiWWf3UfLiRDJ5EDd49zg6O9wclZ7kUMv2WRFr4HKjXp/5t8JZ11QbQfUS6/cRCKGwYhtNAY88kQ==
+
+"@esbuild/darwin-x64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/darwin-x64/-/darwin-x64-0.21.5.tgz#c13838fa57372839abdddc91d71542ceea2e1e22"
+  integrity sha512-se/JjF8NlmKVG4kNIuyWMV/22ZaerB+qaSi5MdrXtd6R08kvs2qCN4C09miupktDitvh8jRFflwGFBQcxZRjbw==
+
+"@esbuild/freebsd-arm64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/freebsd-arm64/-/freebsd-arm64-0.21.5.tgz#646b989aa20bf89fd071dd5dbfad69a3542e550e"
+  integrity sha512-5JcRxxRDUJLX8JXp/wcBCy3pENnCgBR9bN6JsY4OmhfUtIHe3ZW0mawA7+RDAcMLrMIZaf03NlQiX9DGyB8h4g==
+
+"@esbuild/freebsd-x64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/freebsd-x64/-/freebsd-x64-0.21.5.tgz#aa615cfc80af954d3458906e38ca22c18cf5c261"
+  integrity sha512-J95kNBj1zkbMXtHVH29bBriQygMXqoVQOQYA+ISs0/2l3T9/kj42ow2mpqerRBxDJnmkUDCaQT/dfNXWX/ZZCQ==
+
+"@esbuild/linux-arm64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/linux-arm64/-/linux-arm64-0.21.5.tgz#70ac6fa14f5cb7e1f7f887bcffb680ad09922b5b"
+  integrity sha512-ibKvmyYzKsBeX8d8I7MH/TMfWDXBF3db4qM6sy+7re0YXya+K1cem3on9XgdT2EQGMu4hQyZhan7TeQ8XkGp4Q==
+
+"@esbuild/linux-arm@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/linux-arm/-/linux-arm-0.21.5.tgz#fc6fd11a8aca56c1f6f3894f2bea0479f8f626b9"
+  integrity sha512-bPb5AHZtbeNGjCKVZ9UGqGwo8EUu4cLq68E95A53KlxAPRmUyYv2D6F0uUI65XisGOL1hBP5mTronbgo+0bFcA==
+
+"@esbuild/linux-ia32@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/linux-ia32/-/linux-ia32-0.21.5.tgz#3271f53b3f93e3d093d518d1649d6d68d346ede2"
+  integrity sha512-YvjXDqLRqPDl2dvRODYmmhz4rPeVKYvppfGYKSNGdyZkA01046pLWyRKKI3ax8fbJoK5QbxblURkwK/MWY18Tg==
+
+"@esbuild/linux-loong64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/linux-loong64/-/linux-loong64-0.21.5.tgz#ed62e04238c57026aea831c5a130b73c0f9f26df"
+  integrity sha512-uHf1BmMG8qEvzdrzAqg2SIG/02+4/DHB6a9Kbya0XDvwDEKCoC8ZRWI5JJvNdUjtciBGFQ5PuBlpEOXQj+JQSg==
+
+"@esbuild/linux-mips64el@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/linux-mips64el/-/linux-mips64el-0.21.5.tgz#e79b8eb48bf3b106fadec1ac8240fb97b4e64cbe"
+  integrity sha512-IajOmO+KJK23bj52dFSNCMsz1QP1DqM6cwLUv3W1QwyxkyIWecfafnI555fvSGqEKwjMXVLokcV5ygHW5b3Jbg==
+
+"@esbuild/linux-ppc64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/linux-ppc64/-/linux-ppc64-0.21.5.tgz#5f2203860a143b9919d383ef7573521fb154c3e4"
+  integrity sha512-1hHV/Z4OEfMwpLO8rp7CvlhBDnjsC3CttJXIhBi+5Aj5r+MBvy4egg7wCbe//hSsT+RvDAG7s81tAvpL2XAE4w==
+
+"@esbuild/linux-riscv64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/linux-riscv64/-/linux-riscv64-0.21.5.tgz#07bcafd99322d5af62f618cb9e6a9b7f4bb825dc"
+  integrity sha512-2HdXDMd9GMgTGrPWnJzP2ALSokE/0O5HhTUvWIbD3YdjME8JwvSCnNGBnTThKGEB91OZhzrJ4qIIxk/SBmyDDA==
+
+"@esbuild/linux-s390x@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/linux-s390x/-/linux-s390x-0.21.5.tgz#b7ccf686751d6a3e44b8627ababc8be3ef62d8de"
+  integrity sha512-zus5sxzqBJD3eXxwvjN1yQkRepANgxE9lgOW2qLnmr8ikMTphkjgXu1HR01K4FJg8h1kEEDAqDcZQtbrRnB41A==
+
+"@esbuild/linux-x64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/linux-x64/-/linux-x64-0.21.5.tgz#6d8f0c768e070e64309af8004bb94e68ab2bb3b0"
+  integrity sha512-1rYdTpyv03iycF1+BhzrzQJCdOuAOtaqHTWJZCWvijKD2N5Xu0TtVC8/+1faWqcP9iBCWOmjmhoH94dH82BxPQ==
+
+"@esbuild/netbsd-x64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/netbsd-x64/-/netbsd-x64-0.21.5.tgz#bbe430f60d378ecb88decb219c602667387a6047"
+  integrity sha512-Woi2MXzXjMULccIwMnLciyZH4nCIMpWQAs049KEeMvOcNADVxo0UBIQPfSmxB3CWKedngg7sWZdLvLczpe0tLg==
+
+"@esbuild/openbsd-x64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/openbsd-x64/-/openbsd-x64-0.21.5.tgz#99d1cf2937279560d2104821f5ccce220cb2af70"
+  integrity sha512-HLNNw99xsvx12lFBUwoT8EVCsSvRNDVxNpjZ7bPn947b8gJPzeHWyNVhFsaerc0n3TsbOINvRP2byTZ5LKezow==
+
+"@esbuild/sunos-x64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/sunos-x64/-/sunos-x64-0.21.5.tgz#08741512c10d529566baba837b4fe052c8f3487b"
+  integrity sha512-6+gjmFpfy0BHU5Tpptkuh8+uw3mnrvgs+dSPQXQOv3ekbordwnzTVEb4qnIvQcYXq6gzkyTnoZ9dZG+D4garKg==
+
+"@esbuild/win32-arm64@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/win32-arm64/-/win32-arm64-0.21.5.tgz#675b7385398411240735016144ab2e99a60fc75d"
+  integrity sha512-Z0gOTd75VvXqyq7nsl93zwahcTROgqvuAcYDUr+vOv8uHhNSKROyU961kgtCD1e95IqPKSQKH7tBTslnS3tA8A==
+
+"@esbuild/win32-ia32@0.21.5":
+  version "0.21.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/win32-ia32/-/win32-ia32-0.21.5.tgz#1bfc3ce98aa6ca9a0969e4d2af72144c59c1193b"
+  integrity sha512-SWXFF1CL2RVNMaVs+BBClwtfZSvDgtL//G/smwAc5oVK/UPu2Gu9tIaRgFmYFFKrmg3SyAjSrElf0TiJ1v8fYA==
+
 "@esbuild/win32-x64@0.21.5":
   version "0.21.5"
   resolved "https://mirrors.cloud.tencent.com/npm/@esbuild/win32-x64/-/win32-x64-0.21.5.tgz"
@@ -169,7 +279,7 @@
     "@nodelib/fs.stat" "2.0.5"
     run-parallel "^1.1.9"
 
-"@nodelib/fs.stat@^2.0.2", "@nodelib/fs.stat@2.0.5":
+"@nodelib/fs.stat@2.0.5", "@nodelib/fs.stat@^2.0.2":
   version "2.0.5"
   resolved "https://mirrors.cloud.tencent.com/npm/@nodelib/fs.stat/-/fs.stat-2.0.5.tgz"
   integrity sha512-RkhPPp2zrqDAQA/2jNhnztcPAlv64XdhIp7a7454A5ovI7Bukxgt7MX7udwAu3zg1DcpPU0rz3VV1SeaqvY4+A==
@@ -197,6 +307,81 @@
   resolved "https://mirrors.cloud.tencent.com/npm/@pkgr/core/-/core-0.1.1.tgz"
   integrity sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==
 
+"@rollup/rollup-android-arm-eabi@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.24.0.tgz#1661ff5ea9beb362795304cb916049aba7ac9c54"
+  integrity sha512-Q6HJd7Y6xdB48x8ZNVDOqsbh2uByBhgK8PiQgPhwkIw/HC/YX5Ghq2mQY5sRMZWHb3VsFkWooUVOZHKr7DmDIA==
+
+"@rollup/rollup-android-arm64@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-android-arm64/-/rollup-android-arm64-4.24.0.tgz#2ffaa91f1b55a0082b8a722525741aadcbd3971e"
+  integrity sha512-ijLnS1qFId8xhKjT81uBHuuJp2lU4x2yxa4ctFPtG+MqEE6+C5f/+X/bStmxapgmwLwiL3ih122xv8kVARNAZA==
+
+"@rollup/rollup-darwin-arm64@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.24.0.tgz#627007221b24b8cc3063703eee0b9177edf49c1f"
+  integrity sha512-bIv+X9xeSs1XCk6DVvkO+S/z8/2AMt/2lMqdQbMrmVpgFvXlmde9mLcbQpztXm1tajC3raFDqegsH18HQPMYtA==
+
+"@rollup/rollup-darwin-x64@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-darwin-x64/-/rollup-darwin-x64-4.24.0.tgz#0605506142b9e796c370d59c5984ae95b9758724"
+  integrity sha512-X6/nOwoFN7RT2svEQWUsW/5C/fYMBe4fnLK9DQk4SX4mgVBiTA9h64kjUYPvGQ0F/9xwJ5U5UfTbl6BEjaQdBQ==
+
+"@rollup/rollup-linux-arm-gnueabihf@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-linux-arm-gnueabihf/-/rollup-linux-arm-gnueabihf-4.24.0.tgz#62dfd196d4b10c0c2db833897164d2d319ee0cbb"
+  integrity sha512-0KXvIJQMOImLCVCz9uvvdPgfyWo93aHHp8ui3FrtOP57svqrF/roSSR5pjqL2hcMp0ljeGlU4q9o/rQaAQ3AYA==
+
+"@rollup/rollup-linux-arm-musleabihf@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-linux-arm-musleabihf/-/rollup-linux-arm-musleabihf-4.24.0.tgz#53ce72aeb982f1f34b58b380baafaf6a240fddb3"
+  integrity sha512-it2BW6kKFVh8xk/BnHfakEeoLPv8STIISekpoF+nBgWM4d55CZKc7T4Dx1pEbTnYm/xEKMgy1MNtYuoA8RFIWw==
+
+"@rollup/rollup-linux-arm64-gnu@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.24.0.tgz#1632990f62a75c74f43e4b14ab3597d7ed416496"
+  integrity sha512-i0xTLXjqap2eRfulFVlSnM5dEbTVque/3Pi4g2y7cxrs7+a9De42z4XxKLYJ7+OhE3IgxvfQM7vQc43bwTgPwA==
+
+"@rollup/rollup-linux-arm64-musl@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-linux-arm64-musl/-/rollup-linux-arm64-musl-4.24.0.tgz#8c03a996efb41e257b414b2e0560b7a21f2d9065"
+  integrity sha512-9E6MKUJhDuDh604Qco5yP/3qn3y7SLXYuiC0Rpr89aMScS2UAmK1wHP2b7KAa1nSjWJc/f/Lc0Wl1L47qjiyQw==
+
+"@rollup/rollup-linux-powerpc64le-gnu@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-linux-powerpc64le-gnu/-/rollup-linux-powerpc64le-gnu-4.24.0.tgz#5b98729628d5bcc8f7f37b58b04d6845f85c7b5d"
+  integrity sha512-2XFFPJ2XMEiF5Zi2EBf4h73oR1V/lycirxZxHZNc93SqDN/IWhYYSYj8I9381ikUFXZrz2v7r2tOVk2NBwxrWw==
+
+"@rollup/rollup-linux-riscv64-gnu@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-linux-riscv64-gnu/-/rollup-linux-riscv64-gnu-4.24.0.tgz#48e42e41f4cabf3573cfefcb448599c512e22983"
+  integrity sha512-M3Dg4hlwuntUCdzU7KjYqbbd+BLq3JMAOhCKdBE3TcMGMZbKkDdJ5ivNdehOssMCIokNHFOsv7DO4rlEOfyKpg==
+
+"@rollup/rollup-linux-s390x-gnu@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-linux-s390x-gnu/-/rollup-linux-s390x-gnu-4.24.0.tgz#e0b4f9a966872cb7d3e21b9e412a4b7efd7f0b58"
+  integrity sha512-mjBaoo4ocxJppTorZVKWFpy1bfFj9FeCMJqzlMQGjpNPY9JwQi7OuS1axzNIk0nMX6jSgy6ZURDZ2w0QW6D56g==
+
+"@rollup/rollup-linux-x64-gnu@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.24.0.tgz#78144741993100f47bd3da72fce215e077ae036b"
+  integrity sha512-ZXFk7M72R0YYFN5q13niV0B7G8/5dcQ9JDp8keJSfr3GoZeXEoMHP/HlvqROA3OMbMdfr19IjCeNAnPUG93b6A==
+
+"@rollup/rollup-linux-x64-musl@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.24.0.tgz#d9fe32971883cd1bd858336bd33a1c3ca6146127"
+  integrity sha512-w1i+L7kAXZNdYl+vFvzSZy8Y1arS7vMgIy8wusXJzRrPyof5LAb02KGr1PD2EkRcl73kHulIID0M501lN+vobQ==
+
+"@rollup/rollup-win32-arm64-msvc@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-win32-arm64-msvc/-/rollup-win32-arm64-msvc-4.24.0.tgz#71fa3ea369316db703a909c790743972e98afae5"
+  integrity sha512-VXBrnPWgBpVDCVY6XF3LEW0pOU51KbaHhccHw6AS6vBWIC60eqsH19DAeeObl+g8nKAz04QFdl/Cefta0xQtUQ==
+
+"@rollup/rollup-win32-ia32-msvc@4.24.0":
+  version "4.24.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-win32-ia32-msvc/-/rollup-win32-ia32-msvc-4.24.0.tgz#653f5989a60658e17d7576a3996deb3902e342e2"
+  integrity sha512-xrNcGDU0OxVcPTH/8n/ShH4UevZxKIO6HJFK0e15XItZP2UcaiLFd5kiX7hJnqCbSztUF8Qot+JWBC/QXRPYWQ==
+
 "@rollup/rollup-win32-x64-msvc@4.24.0":
   version "4.24.0"
   resolved "https://mirrors.cloud.tencent.com/npm/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.24.0.tgz"
@@ -217,7 +402,7 @@
   resolved "https://mirrors.cloud.tencent.com/npm/@tsconfig/node20/-/node20-20.1.4.tgz"
   integrity sha512-sqgsT69YFeLWf5NtJ4Xq/xAF8p4ZQHlmGW74Nu2tD4+g5fAsposc4ZfaaPixVu4y01BEiDCWLRDCvDM5JOsRxg==
 
-"@types/estree@^1.0.0", "@types/estree@1.0.6":
+"@types/estree@1.0.6", "@types/estree@^1.0.0":
   version "1.0.6"
   resolved "https://mirrors.cloud.tencent.com/npm/@types/estree/-/estree-1.0.6.tgz"
   integrity sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==
@@ -238,7 +423,7 @@
   dependencies:
     undici-types "~6.19.2"
 
-"@types/node@^18.0.0 || >=20.0.0", "@types/node@^20.14.5":
+"@types/node@^20.14.5":
   version "20.16.11"
   resolved "https://mirrors.cloud.tencent.com/npm/@types/node/-/node-20.16.11.tgz"
   integrity sha512-y+cTCACu92FyA5fgQSAI8A1H429g7aSK2HsO7K4XYUWc4dY5IUz55JSDIYT6/VsOLfGy8vmvQYC2hfb0iF16Uw==
@@ -249,6 +434,11 @@
   version "4.0.5"
   resolved "https://mirrors.cloud.tencent.com/npm/@types/tough-cookie/-/tough-cookie-4.0.5.tgz"
   integrity sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==
+
+"@types/web-bluetooth@^0.0.20":
+  version "0.0.20"
+  resolved "https://mirrors.cloud.tencent.com/npm/@types/web-bluetooth/-/web-bluetooth-0.0.20.tgz#f066abfcd1cbe66267cdbbf0de010d8a41b41597"
+  integrity sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==
 
 "@typescript-eslint/eslint-plugin@^7.1.1":
   version "7.18.0"
@@ -265,7 +455,7 @@
     natural-compare "^1.4.0"
     ts-api-utils "^1.3.0"
 
-"@typescript-eslint/parser@^7.0.0", "@typescript-eslint/parser@^7.1.1":
+"@typescript-eslint/parser@^7.1.1":
   version "7.18.0"
   resolved "https://mirrors.cloud.tencent.com/npm/@typescript-eslint/parser/-/parser-7.18.0.tgz"
   integrity sha512-4Z+L8I2OqhZV8qA132M4wNL30ypZGYOQVBfMgxDH/K5UX0PNqTu1c6za9ST5r9+tavvHiTWmBnKzpCJ/GlVFtg==
@@ -385,7 +575,7 @@
     loupe "^2.3.7"
     pretty-format "^29.7.0"
 
-"@volar/language-core@~2.4.1", "@volar/language-core@2.4.6":
+"@volar/language-core@2.4.6", "@volar/language-core@~2.4.1":
   version "2.4.6"
   resolved "https://mirrors.cloud.tencent.com/npm/@volar/language-core/-/language-core-2.4.6.tgz"
   integrity sha512-FxUfxaB8sCqvY46YjyAAV6c3mMIq/NWQMVvJ+uS4yxr1KzOvyg61gAuOnNvgCvO4TZ7HcLExBEsWcDu4+K4E8A==
@@ -406,6 +596,29 @@
     path-browserify "^1.0.1"
     vscode-uri "^3.0.8"
 
+"@vue-flow/background@^1.3.2":
+  version "1.3.2"
+  resolved "https://mirrors.cloud.tencent.com/npm/@vue-flow/background/-/background-1.3.2.tgz#0c90cd05e5d60da017bbaf5a1c3eb6af7ed9b778"
+  integrity sha512-eJPhDcLj1wEo45bBoqTXw1uhl0yK2RaQGnEINqvvBsAFKh/camHJd5NPmOdS1w+M9lggc9igUewxaEd3iCQX2w==
+
+"@vue-flow/core@^1.42.1":
+  version "1.42.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/@vue-flow/core/-/core-1.42.1.tgz#d4274c7452766f05e642317af197be85d4c6188e"
+  integrity sha512-QzzTxMAXfOeETKc+N3XMp5XpiPxKBHK5kq98avgTsE6MXyeU2E8EkANwwgSB/hvJ/k36RjU0Y7BOwCHiqiI1tw==
+  dependencies:
+    "@vueuse/core" "^10.5.0"
+    d3-drag "^3.0.0"
+    d3-selection "^3.0.0"
+    d3-zoom "^3.0.0"
+
+"@vue-flow/minimap@^1.5.2":
+  version "1.5.2"
+  resolved "https://mirrors.cloud.tencent.com/npm/@vue-flow/minimap/-/minimap-1.5.2.tgz#8d036800c52ec77bfe1586c74d51c66e017f5ef6"
+  integrity sha512-XNSpWwwXfCWqJilc2eCW+3ry3r9vhF8HmUw5wrAsUTHiss4R9k5uZLABo7c3T3VdcVRJ8pTfUJ9vjpzb8H+FKg==
+  dependencies:
+    d3-selection "^3.0.0"
+    d3-zoom "^3.0.0"
+
 "@vue/compiler-core@3.5.11":
   version "3.5.11"
   resolved "https://mirrors.cloud.tencent.com/npm/@vue/compiler-core/-/compiler-core-3.5.11.tgz"
@@ -417,7 +630,7 @@
     estree-walker "^2.0.2"
     source-map-js "^1.2.0"
 
-"@vue/compiler-dom@^3.4.0", "@vue/compiler-dom@3.5.11":
+"@vue/compiler-dom@3.5.11", "@vue/compiler-dom@^3.4.0":
   version "3.5.11"
   resolved "https://mirrors.cloud.tencent.com/npm/@vue/compiler-dom/-/compiler-dom-3.5.11.tgz"
   integrity sha512-pyGf8zdbDDRkBrEzf8p7BQlMKNNF5Fk/Cf/fQ6PiUz9at4OaUfyXW0dGJTo2Vl1f5U9jSLCNf0EZJEogLXoeew==
@@ -525,7 +738,7 @@
     "@vue/compiler-ssr" "3.5.11"
     "@vue/shared" "3.5.11"
 
-"@vue/shared@^3.4.0", "@vue/shared@3.5.11":
+"@vue/shared@3.5.11", "@vue/shared@^3.4.0":
   version "3.5.11"
   resolved "https://mirrors.cloud.tencent.com/npm/@vue/shared/-/shared-3.5.11.tgz"
   integrity sha512-W8GgysJVnFo81FthhzurdRAWP/byq3q2qIw70e0JWblzVhjgOMiC2GyovXrZTFQJnFVryYaKGP3Tc9vYzYm6PQ==
@@ -542,6 +755,28 @@
   version "0.5.1"
   resolved "https://mirrors.cloud.tencent.com/npm/@vue/tsconfig/-/tsconfig-0.5.1.tgz"
   integrity sha512-VcZK7MvpjuTPx2w6blwnwZAu5/LgBUtejFOi3pPGQFXQN5Ela03FUtd2Qtg4yWGGissVL0dr6Ro1LfOFh+PCuQ==
+
+"@vueuse/core@^10.5.0":
+  version "10.11.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/@vueuse/core/-/core-10.11.1.tgz#15d2c0b6448d2212235b23a7ba29c27173e0c2c6"
+  integrity sha512-guoy26JQktXPcz+0n3GukWIy/JDNKti9v6VEMu6kV2sYBsWuGiTU8OWdg+ADfUbHg3/3DlqySDe7JmdHrktiww==
+  dependencies:
+    "@types/web-bluetooth" "^0.0.20"
+    "@vueuse/metadata" "10.11.1"
+    "@vueuse/shared" "10.11.1"
+    vue-demi ">=0.14.8"
+
+"@vueuse/metadata@10.11.1":
+  version "10.11.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/@vueuse/metadata/-/metadata-10.11.1.tgz#209db7bb5915aa172a87510b6de2ca01cadbd2a7"
+  integrity sha512-IGa5FXd003Ug1qAZmyE8wF3sJ81xGLSqTqtQ6jaVfkeZ4i5kS2mwQF61yhVqojRnenVew5PldLyRgvdl4YYuSw==
+
+"@vueuse/shared@10.11.1":
+  version "10.11.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/@vueuse/shared/-/shared-10.11.1.tgz#62b84e3118ae6e1f3ff38f4fbe71b0c5d0f10938"
+  integrity sha512-LHpC8711VFZlDaYUXEBbFBCQ7GS3dVU9mjOhhMhXP6txTV4EhYQg/KGnQuvt/sPAtoUKq7VVUnL6mVtFoL42sA==
+  dependencies:
+    vue-demi ">=0.14.8"
 
 abbrev@^2.0.0:
   version "2.0.0"
@@ -560,7 +795,7 @@ acorn-walk@^8.3.2:
   dependencies:
     acorn "^8.11.0"
 
-"acorn@^6.0.0 || ^7.0.0 || ^8.0.0", acorn@^8.11.0, acorn@^8.12.1, acorn@^8.9.0:
+acorn@^8.11.0, acorn@^8.12.1, acorn@^8.9.0:
   version "8.12.1"
   resolved "https://mirrors.cloud.tencent.com/npm/acorn/-/acorn-8.12.1.tgz"
   integrity sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==
@@ -604,12 +839,7 @@ ansi-styles@^5.0.0:
   resolved "https://mirrors.cloud.tencent.com/npm/ansi-styles/-/ansi-styles-5.2.0.tgz"
   integrity sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==
 
-ansi-styles@^6.1.0:
-  version "6.2.1"
-  resolved "https://mirrors.cloud.tencent.com/npm/ansi-styles/-/ansi-styles-6.2.1.tgz"
-  integrity sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==
-
-ansi-styles@^6.2.1:
+ansi-styles@^6.1.0, ansi-styles@^6.2.1:
   version "6.2.1"
   resolved "https://mirrors.cloud.tencent.com/npm/ansi-styles/-/ansi-styles-6.2.1.tgz"
   integrity sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==
@@ -711,7 +941,7 @@ braces@^3.0.3, braces@~3.0.2:
   dependencies:
     fill-range "^7.1.1"
 
-browserslist@^4.23.3, "browserslist@>= 4.21.0":
+browserslist@^4.23.3:
   version "4.24.0"
   resolved "https://mirrors.cloud.tencent.com/npm/browserslist/-/browserslist-4.24.0.tgz"
   integrity sha512-Rmb62sR1Zpjql25eSanFGEhAxcFwfA1K0GuQcLoaJBAcENegrQut3hYdhXFF1obQfiDyqIW/cLM5HSJ/9k884A==
@@ -798,15 +1028,15 @@ color-convert@^2.0.1:
   dependencies:
     color-name "~1.1.4"
 
-color-name@^1.0.0, color-name@~1.1.4:
-  version "1.1.4"
-  resolved "https://mirrors.cloud.tencent.com/npm/color-name/-/color-name-1.1.4.tgz"
-  integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
-
 color-name@1.1.3:
   version "1.1.3"
   resolved "https://mirrors.cloud.tencent.com/npm/color-name/-/color-name-1.1.3.tgz"
   integrity sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==
+
+color-name@^1.0.0, color-name@~1.1.4:
+  version "1.1.4"
+  resolved "https://mirrors.cloud.tencent.com/npm/color-name/-/color-name-1.1.4.tgz"
+  integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
 color-string@^1.6.0:
   version "1.9.1"
@@ -895,6 +1125,76 @@ csstype@^3.1.3:
   resolved "https://mirrors.cloud.tencent.com/npm/csstype/-/csstype-3.1.3.tgz"
   integrity sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==
 
+"d3-color@1 - 3":
+  version "3.1.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/d3-color/-/d3-color-3.1.0.tgz#395b2833dfac71507f12ac2f7af23bf819de24e2"
+  integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
+
+"d3-dispatch@1 - 3":
+  version "3.0.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/d3-dispatch/-/d3-dispatch-3.0.1.tgz#5fc75284e9c2375c36c839411a0cf550cbfc4d5e"
+  integrity sha512-rzUyPU/S7rwUflMyLc1ETDeBj0NRuHKKAcvukozwhshr6g6c5d8zh4c2gQjY2bZ0dXeGLWc1PF174P2tVvKhfg==
+
+"d3-drag@2 - 3", d3-drag@^3.0.0:
+  version "3.0.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/d3-drag/-/d3-drag-3.0.0.tgz#994aae9cd23c719f53b5e10e3a0a6108c69607ba"
+  integrity sha512-pWbUJLdETVA8lQNJecMxoXfH6x+mO2UQo8rSmZ+QqxcbyA3hfeprFgIT//HW2nlHChWeIIMwS2Fq+gEARkhTkg==
+  dependencies:
+    d3-dispatch "1 - 3"
+    d3-selection "3"
+
+"d3-ease@1 - 3":
+  version "3.0.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/d3-ease/-/d3-ease-3.0.1.tgz#9658ac38a2140d59d346160f1f6c30fda0bd12f4"
+  integrity sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w==
+
+"d3-interpolate@1 - 3":
+  version "3.0.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/d3-interpolate/-/d3-interpolate-3.0.1.tgz#3c47aa5b32c5b3dfb56ef3fd4342078a632b400d"
+  integrity sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==
+  dependencies:
+    d3-color "1 - 3"
+
+"d3-selection@2 - 3", d3-selection@3, d3-selection@^3.0.0:
+  version "3.0.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/d3-selection/-/d3-selection-3.0.0.tgz#c25338207efa72cc5b9bd1458a1a41901f1e1b31"
+  integrity sha512-fmTRWbNMmsmWq6xJV8D19U/gw/bwrHfNXxrIN+HfZgnzqTHp9jOmKMhsTUjXOJnZOdZY9Q28y4yebKzqDKlxlQ==
+
+"d3-timer@1 - 3":
+  version "3.0.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/d3-timer/-/d3-timer-3.0.1.tgz#6284d2a2708285b1abb7e201eda4380af35e63b0"
+  integrity sha512-ndfJ/JxxMd3nw31uyKoY2naivF+r29V+Lc0svZxe1JvvIRmi8hUsrMvdOwgS1o6uBHmiz91geQ0ylPP0aj1VUA==
+
+"d3-transition@2 - 3":
+  version "3.0.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/d3-transition/-/d3-transition-3.0.1.tgz#6869fdde1448868077fdd5989200cb61b2a1645f"
+  integrity sha512-ApKvfjsSR6tg06xrL434C0WydLr7JewBB3V+/39RMHsaXTOG0zmt/OAXeng5M5LBm0ojmxJrpomQVZ1aPvBL4w==
+  dependencies:
+    d3-color "1 - 3"
+    d3-dispatch "1 - 3"
+    d3-ease "1 - 3"
+    d3-interpolate "1 - 3"
+    d3-timer "1 - 3"
+
+d3-zoom@^3.0.0:
+  version "3.0.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/d3-zoom/-/d3-zoom-3.0.0.tgz#d13f4165c73217ffeaa54295cd6969b3e7aee8f3"
+  integrity sha512-b8AmV3kfQaqWAuacbPuNbL6vahnOJflOhexLzMMNLga62+/nh0JzvJ0aO/5a5MVgUFGS7Hu1P9P03o3fJkDCyw==
+  dependencies:
+    d3-dispatch "1 - 3"
+    d3-drag "2 - 3"
+    d3-interpolate "1 - 3"
+    d3-selection "2 - 3"
+    d3-transition "2 - 3"
+
+dagre@^0.8.5:
+  version "0.8.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/dagre/-/dagre-0.8.5.tgz#ba30b0055dac12b6c1fcc247817442777d06afee"
+  integrity sha512-/aTqmnRta7x7MCCpExk7HQL2O4owCT2h8NT//9I1OQ9vt29Pa0BzSAkR5lwFUcQ7491yVi/3CXU9jQ5o0Mn2Sw==
+  dependencies:
+    graphlib "^2.1.8"
+    lodash "^4.17.15"
+
 data-urls@^5.0.0:
   version "5.0.0"
   resolved "https://mirrors.cloud.tencent.com/npm/data-urls/-/data-urls-5.0.0.tgz"
@@ -913,7 +1213,7 @@ de-indent@^1.0.2:
   resolved "https://mirrors.cloud.tencent.com/npm/de-indent/-/de-indent-1.0.2.tgz"
   integrity sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==
 
-debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@4:
+debug@4, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.7"
   resolved "https://mirrors.cloud.tencent.com/npm/debug/-/debug-4.3.7.tgz"
   integrity sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==
@@ -1045,7 +1345,7 @@ escape-string-regexp@^4.0.0:
   resolved "https://mirrors.cloud.tencent.com/npm/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz"
   integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
-eslint-config-prettier@*, eslint-config-prettier@^9.0.0:
+eslint-config-prettier@^9.0.0:
   version "9.1.0"
   resolved "https://mirrors.cloud.tencent.com/npm/eslint-config-prettier/-/eslint-config-prettier-9.1.0.tgz"
   integrity sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==
@@ -1058,7 +1358,7 @@ eslint-plugin-prettier@^5.0.0:
     prettier-linter-helpers "^1.0.0"
     synckit "^0.9.1"
 
-eslint-plugin-vue@^9.0.0, eslint-plugin-vue@^9.23.0:
+eslint-plugin-vue@^9.23.0:
   version "9.28.0"
   resolved "https://mirrors.cloud.tencent.com/npm/eslint-plugin-vue/-/eslint-plugin-vue-9.28.0.tgz"
   integrity sha512-ShrihdjIhOTxs+MfWun6oJWuk+g/LAhN+CiuOl/jjkG3l0F2AuK5NMTaWqyvBgkFtpYmyks6P4603mLmhNJW8g==
@@ -1085,7 +1385,7 @@ eslint-visitor-keys@^3.3.0, eslint-visitor-keys@^3.4.1, eslint-visitor-keys@^3.4
   resolved "https://mirrors.cloud.tencent.com/npm/eslint-visitor-keys/-/eslint-visitor-keys-3.4.3.tgz"
   integrity sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==
 
-"eslint@^6.0.0 || ^7.0.0 || >=8.0.0", "eslint@^6.2.0 || ^7.0.0 || ^8.0.0 || ^9.0.0", eslint@^8.56.0, eslint@^8.57.0, "eslint@>= 8.0.0", eslint@>=6.0.0, eslint@>=7.0.0, eslint@>=8.0.0:
+eslint@^8.57.0:
   version "8.57.1"
   resolved "https://mirrors.cloud.tencent.com/npm/eslint/-/eslint-8.57.1.tgz"
   integrity sha512-ypowyDxpVSYpkXr9WPv2PAZCtNip1Mv5KTW0SCurXv/9iOpcrH9PaqUElksqEB6pChqHGDRCFTyrZlGhnLNGiA==
@@ -1290,6 +1590,11 @@ fs.realpath@^1.0.0:
   resolved "https://mirrors.cloud.tencent.com/npm/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
+fsevents@~2.3.2, fsevents@~2.3.3:
+  version "2.3.3"
+  resolved "https://mirrors.cloud.tencent.com/npm/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
+
 function-bind@^1.1.2:
   version "1.1.2"
   resolved "https://mirrors.cloud.tencent.com/npm/function-bind/-/function-bind-1.1.2.tgz"
@@ -1366,6 +1671,13 @@ graphemer@^1.4.0:
   version "1.4.0"
   resolved "https://mirrors.cloud.tencent.com/npm/graphemer/-/graphemer-1.4.0.tgz"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
+
+graphlib@^2.1.8:
+  version "2.1.8"
+  resolved "https://mirrors.cloud.tencent.com/npm/graphlib/-/graphlib-2.1.8.tgz#5761d414737870084c92ec7b5dbcb0592c9d35da"
+  integrity sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==
+  dependencies:
+    lodash "^4.17.15"
 
 has-flag@^4.0.0:
   version "4.0.0"
@@ -1563,7 +1875,7 @@ js-yaml@^4.1.0:
   dependencies:
     argparse "^2.0.1"
 
-jsdom@*, jsdom@^24.1.0:
+jsdom@^24.1.0:
   version "24.1.3"
   resolved "https://mirrors.cloud.tencent.com/npm/jsdom/-/jsdom-24.1.3.tgz"
   integrity sha512-MyL55p3Ut3cXbeBEG7Hcv0mVM8pp8PBNWxRqchZnSfAiES1v1mRnMeFfaHWIPULpwsYfvO+ZmMZz5tGCnjzDUQ==
@@ -1660,7 +1972,7 @@ lodash.merge@^4.6.2:
   resolved "https://mirrors.cloud.tencent.com/npm/lodash.merge/-/lodash.merge-4.6.2.tgz"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.17.21:
+lodash@^4.17.15, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://mirrors.cloud.tencent.com/npm/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -1724,6 +2036,13 @@ mimic-fn@^4.0.0:
   resolved "https://mirrors.cloud.tencent.com/npm/mimic-fn/-/mimic-fn-4.0.0.tgz"
   integrity sha512-vqiC06CuhBTUdZH+RYl8sFrL096vA45Ok5ISO6sE/Mr1jRbGH4Csnhi8f3wKVl7x8mO4Au7Ir9D3Oyv1VYMFJw==
 
+minimatch@9.0.1:
+  version "9.0.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/minimatch/-/minimatch-9.0.1.tgz"
+  integrity sha512-0jWhJpD/MdhPXwPuiRkCbfYfSKp2qnn2eOc279qI7f+osl/l+prKSrvhg157zSYvx/1nmgn2NqdT6k2Z7zSH9w==
+  dependencies:
+    brace-expansion "^2.0.1"
+
 minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
   version "3.1.2"
   resolved "https://mirrors.cloud.tencent.com/npm/minimatch/-/minimatch-3.1.2.tgz"
@@ -1731,31 +2050,10 @@ minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimatch@^9.0.0:
+minimatch@^9.0.0, minimatch@^9.0.3, minimatch@^9.0.4:
   version "9.0.5"
   resolved "https://mirrors.cloud.tencent.com/npm/minimatch/-/minimatch-9.0.5.tgz"
   integrity sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==
-  dependencies:
-    brace-expansion "^2.0.1"
-
-minimatch@^9.0.3:
-  version "9.0.5"
-  resolved "https://mirrors.cloud.tencent.com/npm/minimatch/-/minimatch-9.0.5.tgz"
-  integrity sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==
-  dependencies:
-    brace-expansion "^2.0.1"
-
-minimatch@^9.0.4:
-  version "9.0.5"
-  resolved "https://mirrors.cloud.tencent.com/npm/minimatch/-/minimatch-9.0.5.tgz"
-  integrity sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==
-  dependencies:
-    brace-expansion "^2.0.1"
-
-minimatch@9.0.1:
-  version "9.0.1"
-  resolved "https://mirrors.cloud.tencent.com/npm/minimatch/-/minimatch-9.0.1.tgz"
-  integrity sha512-0jWhJpD/MdhPXwPuiRkCbfYfSKp2qnn2eOc279qI7f+osl/l+prKSrvhg157zSYvx/1nmgn2NqdT6k2Z7zSH9w==
   dependencies:
     brace-expansion "^2.0.1"
 
@@ -2092,7 +2390,7 @@ postcss-value-parser@^4.0.0, postcss-value-parser@^4.2.0:
   resolved "https://mirrors.cloud.tencent.com/npm/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz"
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
-postcss@^8.0.0, postcss@^8.1.0, postcss@^8.2.14, postcss@^8.4.21, postcss@^8.4.23, postcss@^8.4.43, postcss@^8.4.47, postcss@>=8.0.9:
+postcss@^8.4.23, postcss@^8.4.43, postcss@^8.4.47:
   version "8.4.47"
   resolved "https://mirrors.cloud.tencent.com/npm/postcss/-/postcss-8.4.47.tgz"
   integrity sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==
@@ -2113,7 +2411,7 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^3.2.5, "prettier@>= 3.0.0", prettier@>=3.0.0:
+prettier@^3.2.5:
   version "3.3.3"
   resolved "https://mirrors.cloud.tencent.com/npm/prettier/-/prettier-3.3.3.tgz"
   integrity sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==
@@ -2556,7 +2854,7 @@ type-fest@^0.20.2:
   resolved "https://mirrors.cloud.tencent.com/npm/type-fest/-/type-fest-0.20.2.tgz"
   integrity sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==
 
-typescript@*, typescript@>=4.2.0, typescript@>=4.4.4, typescript@>=4.7.4, typescript@>=5.0.0, typescript@~5.4.0:
+typescript@~5.4.0:
   version "5.4.5"
   resolved "https://mirrors.cloud.tencent.com/npm/typescript/-/typescript-5.4.5.tgz"
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
@@ -2662,7 +2960,7 @@ vue-component-type-helpers@^2.0.0:
   resolved "https://mirrors.cloud.tencent.com/npm/vue-component-type-helpers/-/vue-component-type-helpers-2.1.6.tgz"
   integrity sha512-ng11B8B/ZADUMMOsRbqv0arc442q7lifSubD0v8oDXIFoMg/mXwAPUunrroIDkY+mcD0dHKccdaznSVp8EoX3w==
 
-vue-demi@^0.14.10:
+vue-demi@>=0.14.8, vue-demi@^0.14.10:
   version "0.14.10"
   resolved "https://mirrors.cloud.tencent.com/npm/vue-demi/-/vue-demi-0.14.10.tgz"
   integrity sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==
@@ -2715,7 +3013,7 @@ vue-virtual-scroller@^2.0.0-beta.8:
     vue-observe-visibility "^2.0.0-alpha.1"
     vue-resize "^2.0.0-alpha.1"
 
-"vue@^2.6.14 || ^3.3.0", vue@^3.0.0, "vue@^3.0.0-0 || ^2.6.0", vue@^3.1.0, vue@^3.2.0, vue@^3.2.25, vue@^3.4.29, vue@3.5.11:
+vue@^3.4.29:
   version "3.5.11"
   resolved "https://mirrors.cloud.tencent.com/npm/vue/-/vue-3.5.11.tgz"
   integrity sha512-/8Wurrd9J3lb72FTQS7gRMNQD4nztTtKPmuDuPuhqXmmpD6+skVjAeahNpVzsuky6Sy9gy7wn8UadqPtt9SQIg==

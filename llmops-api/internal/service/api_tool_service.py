@@ -226,3 +226,26 @@ class ApiToolService(BaseService):
             raise ValidateErrorException("传递数据必须符合OpenAPI规范的JSON字符串")
 
         return OpenAPISchema(**data)
+
+
+    def api_tool_invoke(self):
+        provider_id = "d0ba46a6-1a33-4e27-bca6-71b24ed1fdb3"
+        tool_name = "YoudaoSuggest"
+
+        api_tool = self.db.session.query(ApiTool).filter(
+            ApiTool.provider_id == provider_id,
+            ApiTool.name == tool_name,
+        ).one_or_none()
+        api_tool_provider = api_tool.provider
+
+        from internal.core.tools.api_tools.entities import ToolEntity
+        tool = self.api_provider_manager.get_tool(ToolEntity(
+            id=provider_id,
+            name=tool_name,
+            url=api_tool.url,
+            method=api_tool.method,
+            description=api_tool.description,
+            headers=api_tool_provider.headers,
+            parameters=api_tool.parameters,
+        ))
+        return tool.invoke({"q": "love", "doctype": "json"})

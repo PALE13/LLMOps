@@ -6,8 +6,6 @@ from typing import Optional
 
 from jinja2 import Template
 from langchain_core.runnables import RunnableConfig
-from langchain_openai import ChatOpenAI
-
 from internal.core.workflow.entities.node_entity import NodeResult, NodeStatus
 from internal.core.workflow.entities.workflow_entity import WorkflowState
 from internal.core.workflow.nodes import BaseNode
@@ -29,11 +27,12 @@ class LLMNode(BaseNode):
         template = Template(self.node_data.prompt)
         prompt_value = template.render(**inputs_dict)
 
-        # todo:3.根据配置创建LLM实例，等待多LLM接入时需要完善
-        llm = ChatOpenAI(
-            model=self.node_data.language_model_config.get("model", "gpt-4o-mini"),
-            **self.node_data.language_model_config.get("parameters", {}),
-        )
+        # 3.通过依赖管理器获取language_model_service并加载模型
+        from app.http.module import injector
+        from internal.service import LanguageModelService
+
+        language_model_service = injector.get(LanguageModelService)
+        llm = language_model_service.load_language_model(self.node_data.language_model_config)
 
         # 4.使用stream来代替invoke，避免接口长时间未响应超时
         content = ""

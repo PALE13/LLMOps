@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from threading import Thread
 from typing import Generator
 
+from PIL.JpegPresets import presets
 from flask import current_app
 from injector import inject
 from langchain_core.messages import HumanMessage
@@ -28,6 +29,7 @@ from .app_service import AppService
 from .base_service import BaseService
 from .conversation_service import ConversationService
 from .retrieval_service import RetrievalService
+from .language_model_service import LanguageModelService
 
 
 @inject
@@ -39,6 +41,7 @@ class OpenAPIService(BaseService):
     retrieval_service: RetrievalService
     app_config_service: AppConfigService
     conversation_service: ConversationService
+    language_model_service: LanguageModelService
 
     def chat(self, req: OpenAPIChatReq, account: Account):
         """根据传递的请求+账号信息发起聊天对话，返回数据为块内容或者生成器"""
@@ -93,11 +96,8 @@ class OpenAPIService(BaseService):
             "status": MessageStatus.NORMAL,
         })
 
-        # todo:9.根据传递的Model_config创建LLM实例，等待多LLM接入时需要调整
-        llm = ChatOpenAI(
-            model=app_config["model_config"]["model"],
-            **app_config["model_config"]["parameters"],
-        )
+        # 9.从语言模型中根据模型配置获取模型实例
+        llm = self.language_model_service.load_language_model(app_config.get("model_config", {}))
 
         # 10.实例化TokenBufferMemory用于提取短期记忆
         token_buffer_memory = TokenBufferMemory(
@@ -130,6 +130,7 @@ class OpenAPIService(BaseService):
             agent_config=AgentConfig(
                 user_id=account.id,
                 invoke_from=InvokeFrom.DEBUGGER,
+                preset_prompt=app_config["preset_prompt"],
                 enable_long_term_memory=app_config["long_term_memory"]["enable"],
                 tools=tools,
                 review_config=app_config["review_config"],

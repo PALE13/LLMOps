@@ -7,7 +7,7 @@ from typing import Any, List
 
 from flask import current_app
 from injector import inject
-from pydantic import BaseModel, json
+from langchain_core.pydantic_v1 import BaseModel
 
 from internal.core.tools.builtin_tools.categories import BuiltinCategoryManager
 from internal.core.tools.builtin_tools.providers import BuiltinProviderManager
@@ -125,8 +125,8 @@ class BuiltinToolService:
             for field_name, model_field in tool.args_schema.__fields__.items():
                 inputs.append({
                     "name": field_name,
-                    "description": model_field.description or "",
-                    # "required": model_field.is_required ,
-                    # "type": model_field.annotation.__name__
+                    "description": model_field.field_info.description or "",
+                    "required": model_field.required,
+                    "type": model_field.outer_type_.__name__,
                 })
         return inputs

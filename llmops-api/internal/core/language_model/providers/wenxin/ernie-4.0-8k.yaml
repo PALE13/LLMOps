@@ -1,5 +1,5 @@
-model: ernie-4-8k
-label: ernie-4-8k
+model: ernie-4.0-8k
+label: ernie-4.0-8k
 model_type: chat
 features:
   - agent_thought

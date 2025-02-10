@@ -30,6 +30,7 @@ from .workflow_service import WorkflowService
 from .language_model_service import LanguageModelService
 from .faiss_service import FaissService
 from .assistant_agent_service import AssistantAgentService
+from .analysis_service import AnalysisService
 
 __all__ = [
     "BaseService",
@@ -62,4 +63,5 @@ __all__ = [
     "LanguageModelService",
     "FaissService",
     "AssistantAgentService",
+    "AnalysisService",
 ]

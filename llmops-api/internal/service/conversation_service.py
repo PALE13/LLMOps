@@ -77,8 +77,8 @@ class ConversationService(BaseService):
         # 6.提取会话名称
         name = "新的会话"
         try:
-            if conversation_info and "subject" in conversation_info:
-                name = conversation_info["subject"]
+            if conversation_info and hasattr(conversation_info, "subject"):
+                name = conversation_info.subject
         except Exception as e:
             logging.exception(f"提取会话名称出错, conversation_info: {conversation_info}, 错误信息: {str(e)}")
         if len(name) > 75:
@@ -108,8 +108,8 @@ class ConversationService(BaseService):
         # 5.提取建议问题列表
         questions = []
         try:
-            if suggested_questions and "questions" in suggested_questions:
-                questions = suggested_questions["questions"]
+            if suggested_questions and hasattr(suggested_questions, "questions"):
+                questions = suggested_questions.questions
         except Exception as e:
             logging.exception(f"生成建议问题出错, suggested_questions: {suggested_questions}, 错误信息: {str(e)}")
         if len(questions) > 3:
@@ -165,8 +165,19 @@ class ConversationService(BaseService):
                         observation=agent_thought.observation,
                         tool=agent_thought.tool,
                         tool_input=agent_thought.tool_input,
+                        # 消息相关数据
                         message=agent_thought.message,
+                        message_token_count=agent_thought.message_token_count,
+                        message_unit_price=agent_thought.message_unit_price,
+                        message_price_unit=agent_thought.message_price_unit,
+                        # 答案相关字段
                         answer=agent_thought.answer,
+                        answer_token_count=agent_thought.answer_token_count,
+                        answer_unit_price=agent_thought.answer_unit_price,
+                        answer_price_unit=agent_thought.answer_price_unit,
+                        # Agent推理统计相关
+                        total_token_count=agent_thought.total_token_count,
+                        total_price=agent_thought.total_price,
                         latency=agent_thought.latency,
                     )
 
@@ -175,8 +186,19 @@ class ConversationService(BaseService):
                     # 8.更新消息信息
                     self.update(
                         message,
+                        # 消息相关字段
                         message=agent_thought.message,
+                        message_token_count=agent_thought.message_token_count,
+                        message_unit_price=agent_thought.message_unit_price,
+                        message_price_unit=agent_thought.message_price_unit,
+                        # 答案相关字段
                         answer=agent_thought.answer,
+                        answer_token_count=agent_thought.answer_token_count,
+                        answer_unit_price=agent_thought.answer_unit_price,
+                        answer_price_unit=agent_thought.answer_price_unit,
+                        # Agent推理统计相关
+                        total_token_count=agent_thought.total_token_count,
+                        total_price=agent_thought.total_price,
                         latency=latency,
                     )
 
@@ -205,6 +227,6 @@ class ConversationService(BaseService):
                     self.update(
                         message,
                         status=agent_thought.event,
-                        error=agent_thought.observation
+                        error=agent_thought.observation,
                     )
                     break

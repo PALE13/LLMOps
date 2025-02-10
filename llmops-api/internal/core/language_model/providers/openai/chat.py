@@ -1,8 +1,9 @@
-
-
-from internal.core.language_model.entities.model_entity import BaseLanguageModel
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from langchain_openai import ChatOpenAI
+
+from internal.core.language_model.entities.model_entity import BaseLanguageModel
 
 
 class Chat(ChatOpenAI, BaseLanguageModel):

@@ -18,7 +18,9 @@ onMounted(async () => await loadApp(String(route.params?.app_id)))
   <!-- 外层容器 -->
   <div class="min-h-screen flex flex-col h-full overflow-hidden">
     <!-- 顶部导航 -->
-    <div class="h-[77px] bg-gray-50 p-4 flex items-center justify-between relative border-b">
+    <div
+      class="h-[77px] flex-shrink-0 bg-gray-50 p-4 flex items-center justify-between relative border-b"
+    >
       <!-- 左侧应用信息 -->
       <div class="flex items-center gap-2">
         <!-- 回退按钮 -->

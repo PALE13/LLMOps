@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { computed, type PropType } from 'vue'
+import MarkdownIt from 'markdown-it'
 import DotFlashing from '@/components/DotFlashing.vue'
 import AgentThought from './AgentThought.vue'
 
@@ -12,9 +13,13 @@ const props = defineProps({
   total_token_count: { type: Number, default: 0, required: false },
   agent_thoughts: { type: Array as PropType<Record<string, any>[]>, default: [], required: true },
   suggested_questions: { type: Array as PropType<string[]>, default: [], required: false },
-  message_class: { type: String, default: 'bg-gray-100', required: false },
+  message_class: { type: String, default: '!bg-gray-100', required: false },
 })
 const emits = defineEmits(['selectSuggestedQuestion'])
+const md = MarkdownIt()
+const compiledMarkdown = computed(() => {
+  return md.render(props.answer)
+})
 </script>
 
 <template>
@@ -31,22 +36,23 @@ const emits = defineEmits(['selectSuggestedQuestion'])
       <icon-apps />
     </a-avatar>
     <!-- 右侧名称与消息 -->
-    <div class="flex flex-col items-start gap-2">
+    <div class="flex-1 flex flex-col items-start gap-2">
       <!-- 应用名称 -->
       <div class="text-gray-700 font-bold">{{ props.app?.name }}</div>
       <!-- 推理步骤 -->
       <agent-thought :agent_thoughts="props.agent_thoughts" :loading="props.loading" />
       <!-- AI消息 -->
       <div
+        v-if="props.loading && props.answer.trim() === ''"
         :class="`${props.message_class} border border-gray-200 text-gray-700 px-4 py-3 rounded-2xl break-all`"
       >
-        <template v-if="props.loading && props.answer.trim() === ''">
-          <dot-flashing />
-        </template>
-        <template v-else>
-          {{ props.answer }}
-        </template>
+        <dot-flashing />
       </div>
+      <div
+        v-else
+        :class="`${props.message_class} markdown-body border border-gray-200 text-gray-700 px-4 py-3 rounded-2xl break-all`"
+        v-html="compiledMarkdown"
+      ></div>
       <!-- 消息展示与操作 -->
       <div class="flex items-center justify-between">
         <!-- 消息数据额外展示 -->
@@ -77,4 +83,13 @@ const emits = defineEmits(['selectSuggestedQuestion'])
   </div>
 </template>
 
-<style scoped></style>
+<style>
+/* 保留 GitHub Markdown 样式，同时使用 TailwindCSS 自定义列表样式 */
+.markdown-body {
+  font-size: 14px;
+}
+
+.markdown-body pre {
+  @apply bg-gray-700 text-white;
+}
+</style>

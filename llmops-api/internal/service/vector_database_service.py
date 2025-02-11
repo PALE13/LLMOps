@@ -30,7 +30,7 @@ class VectorDatabaseService:
         self.embeddings_service = embeddings_service
         # 2.创建/连接weaviate向量数据库
         self.client = weaviate.connect_to_custom(
-            skip_init_checks=False,
+            skip_init_checks=True,
             http_host="60.205.122.6",
             http_port=8080,
             http_secure=False,
@@ -39,7 +39,7 @@ class VectorDatabaseService:
             grpc_secure=False,
             # 对应AUTHENTICATION_APIKEY_ALLOWED_KEYS中的密钥
             # 注意：此处只需要密钥即可，不需要用户名称
-            auth_credentials=AuthApiKey("123456")
+            auth_credentials=AuthApiKey("123456"),
         )
         #  创建/连接远程weaviate向量数据库
         # self.client = weaviate.connect_to_wcs(

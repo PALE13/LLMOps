@@ -6,13 +6,11 @@ from dataclasses import dataclass
 from threading import Thread
 from typing import Generator
 
-from PIL.JpegPresets import presets
 from flask import current_app
 from injector import inject
 from langchain_core.messages import HumanMessage
-from langchain_openai import ChatOpenAI
 
-from internal.core.agent.agents import FunctionCallAgent
+from internal.core.agent.agents import FunctionCallAgent, ReACTAgent
 from internal.core.agent.entities.agent_entity import AgentConfig
 from internal.core.agent.entities.queue_entity import QueueEvent
 from internal.core.memory import TokenBufferMemory
@@ -28,8 +26,9 @@ from .app_config_service import AppConfigService
 from .app_service import AppService
 from .base_service import BaseService
 from .conversation_service import ConversationService
-from .retrieval_service import RetrievalService
 from .language_model_service import LanguageModelService
+from .retrieval_service import RetrievalService
+from ..core.language_model.entities.model_entity import ModelFeature
 
 
 @inject
@@ -124,8 +123,16 @@ class OpenAPIService(BaseService):
             )
             tools.append(dataset_retrieval)
 
-        # todo:14.构建Agent智能体，目前暂时使用FunctionCallAgent
-        agent = FunctionCallAgent(
+        # 14.检测是否关联工作流，如果关联了工作流则将工作流构建成工具添加到tools中
+        if app_config["workflows"]:
+            workflow_tools = self.app_config_service.get_langchain_tools_by_workflow_ids(
+                [workflow["id"] for workflow in app_config["workflows"]]
+            )
+            tools.extend(workflow_tools)
+
+        # 14.根据LLM是否支持tool_call决定使用不同的Agent
+        agent_class = FunctionCallAgent if ModelFeature.TOOL_CALL in llm.features else ReACTAgent
+        agent = agent_class(
             llm=llm,
             agent_config=AgentConfig(
                 user_id=account.id,

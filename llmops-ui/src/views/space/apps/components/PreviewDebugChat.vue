@@ -237,6 +237,7 @@ onMounted(async () => {
                 :latency="item.latency"
                 :total_token_count="item.total_token_count"
                 @select-suggested-question="handleSubmitQuestion"
+                message_class="w-[calc(100%-65px)]"
               />
             </div>
           </dynamic-scroller-item>

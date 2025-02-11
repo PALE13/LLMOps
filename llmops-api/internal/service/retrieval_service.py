@@ -8,7 +8,7 @@ from flask import Flask
 from injector import inject
 from langchain.retrievers import EnsembleRetriever
 from langchain_core.documents import Document as LCDocument
-from pydantic import BaseModel, Field
+from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.tools import BaseTool, tool
 from sqlalchemy import update
 

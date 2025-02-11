@@ -24,7 +24,9 @@ from internal.handler import (
     WorkflowHandler,
     LanguageModelHandler,
     AssistantAgentHandler,
-    AnalysisHandler
+    AnalysisHandler,
+    WebAppHandler,
+    ConversationHandler
 )
 
 
@@ -50,6 +52,8 @@ class Router:
     language_model_handler: LanguageModelHandler
     assistant_agent_handler: AssistantAgentHandler
     analysis_handler: AnalysisHandler
+    web_app_handler: WebAppHandler
+    conversation_handler: ConversationHandler
 
 
 
@@ -145,6 +149,15 @@ class Router:
             "/apps/<uuid:app_id>/conversations/messages",
             view_func=self.app_handler.get_debug_conversation_messages_with_page,
         )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/published-config",
+            view_func=self.app_handler.get_published_config,
+        )
+        bp.add_url_rule(
+            "/apps/<uuid:app_id>/published-config/regenerate-web-app-token",
+            methods=["POST"],
+            view_func=self.app_handler.regenerate_web_app_token,
+        )
 
         # 内置应用广场模块
         bp.add_url_rule(
@@ -170,7 +183,6 @@ class Router:
             "/ai/suggested-questions",
             methods=["POST"],view_func=self.ai_handler.generate_suggested_questions,
         )
-
 
 
 
@@ -481,6 +493,54 @@ class Router:
         bp.add_url_rule(
             "/analysis/<uuid:app_id>",
             view_func=self.analysis_handler.get_app_analysis,
+        )
+
+        # WebApp模块
+        bp.add_url_rule(
+            "/web-apps/<string:token>",
+            view_func=self.web_app_handler.get_web_app)
+        bp.add_url_rule(
+            "/web-apps/<string:token>/chat",
+            methods=["POST"],view_func=self.web_app_handler.web_app_chat,
+        )
+        bp.add_url_rule(
+            "/web-apps/<string:token>/chat/<uuid:task_id>/stop",
+            methods=["POST"],view_func=self.web_app_handler.stop_web_app_chat,
+        )
+        bp.add_url_rule(
+            "/web-apps/<string:token>/conversations",
+            view_func=self.web_app_handler.get_conversations
+        )
+
+
+        # 会话模块
+        bp.add_url_rule(
+            "/conversations/<uuid:conversation_id>/messages",
+            view_func=self.conversation_handler.get_conversation_messages_with_page,
+        )
+        bp.add_url_rule(
+            "/conversations/<uuid:conversation_id>/delete",
+            methods=["POST"],
+            view_func=self.conversation_handler.delete_conversation,
+        )
+        bp.add_url_rule(
+            "/conversations/<uuid:conversation_id>/messages/<uuid:message_id>/delete",
+            methods=["POST"],
+            view_func=self.conversation_handler.delete_message,
+        )
+        bp.add_url_rule(
+            "/conversations/<uuid:conversation_id>/name",
+            view_func=self.conversation_handler.get_conversation_name,
+        )
+        bp.add_url_rule(
+            "/conversations/<uuid:conversation_id>/name",
+            methods=["POST"],
+            view_func=self.conversation_handler.update_conversation_name,
+        )
+        bp.add_url_rule(
+            "/conversations/<uuid:conversation_id>/is-pinned",
+            methods=["POST"],
+            view_func=self.conversation_handler.update_conversation_is_pinned,
         )
 
         # 在应用上去注册蓝图

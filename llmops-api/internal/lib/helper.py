@@ -3,6 +3,8 @@
 
 
 import importlib
+import random
+import string
 from datetime import datetime
 from enum import Enum
 from hashlib import sha3_256
@@ -50,11 +52,11 @@ def combine_documents(documents: list[Document]) -> str:
     return "\n\n".join([document.page_content for document in documents])
 
 
-
 def remove_fields(data_dict: dict, fields: list[str]) -> None:
     """根据传递的字段名移除字典中指定的字段"""
     for field in fields:
         data_dict.pop(field, None)
+
 
 def convert_model_to_dict(obj: Any, *args, **kwargs):
     """辅助函数，将Pydantic V1版本中的UUID/Enum等数据转换成可序列化存储的数据。"""
@@ -98,3 +100,14 @@ def get_value_type(value: Any) -> Any:
         return "boolean"
 
     return value_type
+
+
+def generate_random_string(length: int = 16) -> str:
+    """根据传递的位数，生成随机字符串"""
+    # 1.定义字符集，包含大小写字母和数字
+    chars = string.ascii_letters + string.digits
+
+    # 2.使用random.choices生成指定长度的随机字符串
+    random_str = ''.join(random.choices(chars, k=length))
+
+    return random_str

@@ -1,31 +1,29 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCredentialStore } from '@/stores/credential'
 import { Message, type ValidatedError } from '@arco-design/web-vue'
-import { provider } from '@/services/oauth'
-import { passwordLogin } from '@/services/auth'
+import { usePasswordLogin } from '@/hooks/use-auth'
+import { useProvider } from '@/hooks/use-oauth'
 
 // 1.定义自定义组件所需数据
 const errorMessage = ref('')
-const passwordLoading = ref(false)
-const githubLoading = ref(false)
-const loginForm = reactive({ email: '', password: '' })
+const loginForm = ref({ email: '', password: '' })
 const credentialStore = useCredentialStore()
 const router = useRouter()
+const { loading: passwordLoginLoading, authorization, handlePasswordLogin } = usePasswordLogin()
+const { loading: providerLoading, redirect_url, handleProvider } = useProvider()
 
 // 2.定义忘记密码点击事件
 const forgetPassword = () => Message.error('忘记密码请联系管理员')
 
 // 3.定义github第三方授权认证登录
 const githubLogin = async () => {
-  try {
-    githubLoading.value = true
-    const resp = await provider('github')
-    window.location.href = resp.data.redirect_url
-  } finally {
-    githubLoading.value = false
-  }
+  // 3.1 调用处理器获取提供者重定向地址
+  await handleProvider('github')
+
+  // 3.2 跳转到重定向地址
+  window.location.href = redirect_url.value
 }
 
 // 4.账号密码登录
@@ -36,17 +34,14 @@ const handleSubmit = async ({ errors }: { errors: Record<string, ValidatedError>
   // 4.2 如果没有出错则发起请求进行登录
   try {
     // 4.3 发起账号密码登录，并且将loading设置为true
-    passwordLoading.value = true
-    const resp = await passwordLogin(loginForm.email, loginForm.password)
+    await handlePasswordLogin(loginForm.value.email, loginForm.value.password)
     Message.success('登录成功，正在跳转')
-    credentialStore.update(resp.data)
+    credentialStore.update(authorization.value)
     await router.replace({ path: '/home' })
   } catch (error: any) {
     // 4.4 添加错误信息并清除密码
     errorMessage.value = error.message
-    loginForm.password = ''
-  } finally {
-    passwordLoading.value = false
+    loginForm.value.password = ''
   }
 }
 </script>
@@ -95,11 +90,17 @@ const handleSubmit = async ({ errors }: { errors: Record<string, ValidatedError>
           <a-checkbox>记住密码</a-checkbox>
           <a-link @click="forgetPassword">忘记密码?</a-link>
         </div>
-        <a-button :loading="passwordLoading" size="large" type="primary" html-type="submit" long>
+        <a-button
+          :loading="passwordLoginLoading"
+          size="large"
+          type="primary"
+          html-type="submit"
+          long
+        >
           登录
         </a-button>
         <a-divider>第三方授权</a-divider>
-        <a-button :loading="githubLoading" size="large" type="dashed" long @click="githubLogin">
+        <a-button :loading="providerLoading" size="large" type="dashed" long @click="githubLogin">
           <template #icon>
             <icon-github />
           </template>

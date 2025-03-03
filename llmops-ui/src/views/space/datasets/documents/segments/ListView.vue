@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import moment from 'moment'
 import {
@@ -15,14 +15,8 @@ const route = useRoute()
 const router = useRouter()
 const createOrUpdateModalVisible = ref(false)
 const updateSegmentID = ref('')
-const { document } = useGetDocument(
-  route.params?.dataset_id as string,
-  route.params?.document_id as string,
-)
-const { loading, segments, paginator, loadSegments } = useGetSegmentsWithPage(
-  route.params?.dataset_id as string,
-  route.params?.document_id as string,
-)
+const { document, loadDocument } = useGetDocument()
+const { loading, segments, paginator, loadSegments } = useGetSegmentsWithPage()
 const { handleDelete } = useDeleteSegment()
 const { handleUpdate: handleUpdateSegmentEnabled } = useUpdateSegmentEnabled()
 
@@ -36,9 +30,37 @@ const handleScroll = async (event: UIEvent) => {
     if (loading.value) {
       return
     }
-    await loadSegments()
+    await loadSegments(
+      String(route.params?.dataset_id),
+      String(route.params?.document_id),
+      false,
+      String(route.query?.search_word ?? ''),
+    )
   }
 }
+
+// 监听路由query的变化
+watch(
+  () => route.query?.search_word,
+  (newValue) =>
+    loadSegments(
+      String(route.params?.dataset_id),
+      String(route.params?.document_id),
+      true,
+      String(newValue),
+    ),
+)
+
+// 3.页面DOM加载完毕时加载数据
+onMounted(() => {
+  loadDocument(String(route.params?.dataset_id), String(route.params?.document_id))
+  loadSegments(
+    String(route.params?.dataset_id),
+    String(route.params?.document_id),
+    true,
+    String(route.query?.search_word ?? ''),
+  )
+})
 </script>
 
 <template>
@@ -218,7 +240,13 @@ const handleScroll = async (event: UIEvent) => {
                       route.params?.dataset_id as string,
                       route.params?.document_id as string,
                       segment.id,
-                      () => loadSegments(true),
+                      () =>
+                        loadSegments(
+                          String(route.params?.dataset_id),
+                          String(route.params?.document_id),
+                          true,
+                          String(route.query?.search_word ?? ''),
+                        ),
                     )
                 "
               >
@@ -258,7 +286,15 @@ const handleScroll = async (event: UIEvent) => {
       :dataset_id="route.params?.dataset_id as string"
       :document_id="route.params?.document_id as string"
       :segment_id="updateSegmentID"
-      :callback="() => loadSegments(true)"
+      :callback="
+        () =>
+          loadSegments(
+            String(route.params?.dataset_id),
+            String(route.params?.document_id),
+            true,
+            String(route.query?.search_word ?? ''),
+          )
+      "
     />
   </div>
 </template>

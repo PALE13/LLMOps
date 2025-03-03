@@ -9,7 +9,13 @@ import ModelConfig from './components/ModelConfig.vue'
 // 1.定义自定义组件所需数据
 const props = defineProps({
   visible: { type: Boolean, required: true, default: false },
-  node: { type: Object, required: true, default: {} },
+  node: {
+    type: Object,
+    required: true,
+    default: () => {
+      return {}
+    },
+  },
   loading: { type: Boolean, required: true, default: false },
 })
 const emits = defineEmits(['update:visible', 'updateNode'])

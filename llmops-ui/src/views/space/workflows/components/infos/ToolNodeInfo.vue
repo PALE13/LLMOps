@@ -1,16 +1,23 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { type GraphNode, useVueFlow } from '@vue-flow/core'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useVueFlow } from '@vue-flow/core'
 import { cloneDeep } from 'lodash'
 import { getReferencedVariables } from '@/utils/helper'
 import { apiPrefix } from '@/config'
 import { useGetBuiltinTool, useGetBuiltinTools, useGetCategories } from '@/hooks/use-builtin-tool'
 import { useGetApiTool, useGetApiToolProvidersWithPage } from '@/hooks/use-tool'
+import type { ValidatedError } from '@arco-design/web-vue'
 
 // 1.定义自定义组件所需数据
 const props = defineProps({
   visible: { type: Boolean, required: true, default: false },
-  node: { type: Object as GraphNode, required: true, default: {} },
+  node: {
+    type: Object as any,
+    required: true,
+    default: () => {
+      return {}
+    },
+  },
   loading: { type: Boolean, required: true, default: false },
 })
 const emits = defineEmits(['update:visible', 'updateNode'])
@@ -24,16 +31,16 @@ const {
 const { builtin_tool, loadBuiltinTool } = useGetBuiltinTool()
 const { api_tool, loadApiTool } = useGetApiTool()
 const { builtin_tools, loadBuiltinTools } = useGetBuiltinTools()
-const { categories } = useGetCategories()
+const { categories, loadCategories } = useGetCategories()
 const form = ref<Record<string, any>>({})
 const toolsModalVisible = ref(false)
 const toolsActivateType = ref('api_tool')
 const toolsActivateCategory = ref('all')
 const computedBuiltinTools = computed(() => {
-  if (toolsActivateCategory.value === 'all') return builtin_tools
-  return builtin_tools.filter((item) => item.category === toolsActivateCategory.value)
+  if (toolsActivateCategory.value === 'all') return builtin_tools.value
+  return builtin_tools.value.filter((item: any) => item.category === toolsActivateCategory.value)
 })
-const pythonTypeMap = {
+const pythonTypeMap: Record<string, any> = {
   str: 'string',
   int: 'int',
   float: 'float',
@@ -68,7 +75,7 @@ const removeBindTool = () => {
 }
 
 // 5.定义是否关联工具判断函数
-const isToolSelected = (provider, tool) => {
+const isToolSelected = (provider: Record<string, any>, tool: Record<string, any>) => {
   return (
     form.value.tool?.provider?.name === provider.name && form.value.tool?.tool.name === tool.name
   )
@@ -77,10 +84,10 @@ const isToolSelected = (provider, tool) => {
 // 6.定义工具选择处理器
 const handleSelectTool = async (provider_idx: number, tool_idx: number) => {
   // 6.1 根据不同的工具类型执行不同的操作
-  let selectTool = {}
+  let selectTool: any
   if (toolsActivateType.value === 'api_tool') {
     // 6.2 获取api工具提供者+工具本身，并更新selectTool
-    const apiToolProvider = api_tool_providers[provider_idx]
+    const apiToolProvider = api_tool_providers.value[provider_idx]
     const apiTool = apiToolProvider['tools'][tool_idx]
     selectTool = {
       type: 'api_tool',
@@ -143,28 +150,28 @@ const handleSelectTool = async (provider_idx: number, tool_idx: number) => {
     if (selectTool.type === 'builtin_tool') {
       // 6.8 调用hooks获取内置工具信息，并提取inputs+params
       await loadBuiltinTool(selectTool.provider.name, selectTool.tool.name)
-      const inputs = builtin_tool.inputs
-      const params = builtin_tool.params
+      const inputs = builtin_tool.value.inputs
+      const params = builtin_tool.value.params
 
       // 6.9 更新inputs+params
-      form.value.inputs = inputs.map((item) => {
+      form.value.inputs = inputs.map((item: any) => {
         return {
           name: item.name,
-          type: pythonTypeMap[item.type], // todo:需要制作一个映射
+          type: pythonTypeMap[item.type],
           value_type: 'ref', // 工具调用参数默认设置为引用
           content: '',
           ref: '',
         }
       })
-      form.value.params = params.map((param) => {
+      form.value.params = params.map((param: any) => {
         return { key: param.name, value: param.default }
       })
     } else {
       await loadApiTool(selectTool.provider.id, selectTool.tool.name)
-      const inputs = api_tool.inputs
+      const inputs = api_tool.value.inputs
 
       // 6.10 更新inputs+params
-      form.value.inputs = inputs.map((item) => {
+      form.value.inputs = inputs.map((item: any) => {
         return {
           name: item.name,
           type: pythonTypeMap[item.type],
@@ -200,8 +207,8 @@ const onSubmit = async ({ errors }: { errors: Record<string, ValidatedError> | u
   // 7.5 深度拷贝表单数据内容
   const cloneInputs = cloneDeep(form.value.inputs)
   const cloneParams = cloneDeep(form.value.params)
-  let params = {}
-  cloneParams.forEach((param) => {
+  let params: Record<string, any> = {}
+  cloneParams.forEach((param: Record<string, any>) => {
     params[param.key] = param.value
   })
 
@@ -215,7 +222,7 @@ const onSubmit = async ({ errors }: { errors: Record<string, ValidatedError> | u
     tool_id: form.value.tool?.tool.name,
     meta: cloneDeep(form.value.tool),
     params: params, // 将列表转换成字典
-    inputs: cloneInputs.map((input) => {
+    inputs: cloneInputs.map((input: Record<string, any>) => {
       return {
         name: input.name,
         description: '',
@@ -254,7 +261,7 @@ watch(
         key: key,
         value: value,
       })), // 将字典转换成列表
-      inputs: cloneInputs.map((input) => {
+      inputs: cloneInputs.map((input: any) => {
         // 8.1 计算引用的变量值信息
         const ref =
           input.value.type === 'ref'
@@ -286,6 +293,11 @@ watch(
   },
   { immediate: true },
 )
+
+onMounted(() => {
+  // 加载内置工具分类
+  loadCategories()
+})
 </script>
 
 <template>
@@ -672,7 +684,7 @@ watch(
                     <a-button
                       size="mini"
                       class="hidden group-hover:block rounded px-1.5 flex-shrink-0"
-                      @click="() => handleSelectTool(api_tool_provider_idx, tool_idx)"
+                      @click="() => handleSelectTool(Number(api_tool_provider_idx), tool_idx)"
                     >
                       <template #icon>
                         <icon-plus />

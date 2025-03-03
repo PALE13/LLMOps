@@ -6,7 +6,8 @@ from sqlalchemy import (
     UUID,
     DateTime,
     text,
-    PrimaryKeyConstraint
+    PrimaryKeyConstraint,
+    Index
 )
 
 from internal.extension.database_extension import db
@@ -17,6 +18,8 @@ class EndUser(db.Model):
     __tablename__ = "end_user"
     __table_args__ = (
         PrimaryKeyConstraint("id", name="pk_end_user_id"),
+        Index("end_user_tenant_id_idx", "tenant_id"),
+
     )
 
     id = Column(UUID, nullable=False, server_default=text("uuid_generate_v4()"))  # 终端id

@@ -3,6 +3,7 @@
 import logging
 from dataclasses import dataclass
 from datetime import datetime
+from threading import Thread
 from typing import Any
 from uuid import UUID
 
@@ -11,7 +12,9 @@ from injector import inject
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+from openai.types.beta.assistant_stream_event import ThreadMessageDelta
 from sqlalchemy import desc
+from sqlalchemy.orm import joinedload
 
 from internal.core.agent.entities.queue_entity import AgentThought, QueueEvent
 from internal.entity.conversation_entity import (
@@ -284,7 +287,7 @@ class ConversationService(BaseService):
 
         # 4.执行分页并查询数据
         messages = paginator.paginate(
-            self.db.session.query(Message).filter(
+            self.db.session.query(Message).options(joinedload(Message.agent_thoughts)).filter(
                 Message.conversation_id == conversation.id,
                 Message.status.in_([MessageStatus.STOP, MessageStatus.NORMAL]),
                 Message.answer != "",

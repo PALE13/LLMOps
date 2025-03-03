@@ -33,7 +33,6 @@ class ApiToolService(BaseService):
     db: SQLAlchemy
     api_provider_manager: ApiProviderManager
 
-
     def create_api_tool(
             self,
             req: CreateApiToolReq,
@@ -228,16 +227,21 @@ class ApiToolService(BaseService):
         return OpenAPISchema(**data)
 
 
-    def api_tool_invoke(self):
-        provider_id = "d0ba46a6-1a33-4e27-bca6-71b24ed1fdb3"
-        tool_name = "YoudaoSuggest"
+    def api_tool_invoke(self, provider_id: UUID, tool_name: str, params: dict) -> Any:
+        """通用的API工具调用方法"""
 
+        # 1.根据provider_id和tool_name获取API工具信息
         api_tool = self.db.session.query(ApiTool).filter(
             ApiTool.provider_id == provider_id,
             ApiTool.name == tool_name,
         ).one_or_none()
+        if api_tool is None:
+            raise NotFoundException("该工具不存在")
+
+        # 2.获取API工具提供者信息
         api_tool_provider = api_tool.provider
 
+        # 3.构建工具实体并调用
         from internal.core.tools.api_tools.entities import ToolEntity
         tool = self.api_provider_manager.get_tool(ToolEntity(
             id=provider_id,
@@ -248,4 +252,6 @@ class ApiToolService(BaseService):
             headers=api_tool_provider.headers,
             parameters=api_tool.parameters,
         ))
-        return tool.invoke({"q": "love", "doctype": "json"})
+
+        # 4.调用工具并返回结果
+        return tool.invoke(params)

@@ -133,12 +133,22 @@ const router = createRouter({
           name: 'web-apps-index',
           component: () => import('@/views/web-apps/IndexView.vue'),
         },
+        {
+          path: '/errors/404',
+          name: 'errors-not-found',
+          component: () => import('@/views/errors/NotFoundView.vue'),
+        },
+        {
+          path: '/errors/403',
+          name: 'errors-forbidden',
+          component: () => import('@/views/errors/ForbiddenView.vue'),
+        },
       ],
     },
   ],
 })
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   if (!auth.isLogin() && !['auth-login', 'auth-authorize'].includes(to.name as string)) {
     return { path: '/auth/login' }
   }

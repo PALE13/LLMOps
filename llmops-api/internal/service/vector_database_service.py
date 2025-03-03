@@ -4,13 +4,14 @@
 
 import weaviate
 from injector import inject
+from dataclasses import dataclass
 from langchain_core.vectorstores import VectorStoreRetriever
 from langchain_weaviate import WeaviateVectorStore
 from weaviate import WeaviateClient
 from weaviate.auth import  AuthApiKey
 from weaviate.collections import Collection
 from .embeddings_service import EmbeddingsService
-
+from flask_weaviate import FlaskWeaviate
 
 
 # 向量数据库的集合名字
@@ -18,11 +19,22 @@ COLLECTION_NAME = "Dataset"
 
 
 @inject
+# @dataclass
 class VectorDatabaseService:
     """向量数据库服务"""
     client: WeaviateClient
-    vector_store: WeaviateVectorStore
+    # vector_store: WeaviateVectorStore
+    weaviate: FlaskWeaviate
     embeddings_service: EmbeddingsService
+
+    # @property
+    # def vector_store(self) -> WeaviateVectorStore:
+    #     return WeaviateVectorStore(
+    #         client=self.weaviate.client,
+    #         index_name=COLLECTION_NAME,
+    #         text_key="text",
+    #         embedding=self.embeddings_service.cache_backed_embeddings,
+    #     )
 
     def __init__(self, embeddings_service: EmbeddingsService):
         """构造函数，完成向量数据库服务的客户端+LangChain向量数据库实例的创建"""

@@ -17,7 +17,7 @@ const props = defineProps({
         description: string
       }[]
     >,
-    default: [],
+    default: () => [],
     required: true,
   },
 })
@@ -85,22 +85,20 @@ const handleSelectWorkflow = (idx: number) => {
 
 // 8.提交更新关联工作流
 const handleSubmitWorkflows = async () => {
-  try {
-    // 8.1 处理数据并完成API接口提交
-    await handleUpdateDraftAppConfig(props.app_id, {
-      workflows: activateWorkflows.value.map((activateWorkflow) => activateWorkflow.id),
-    })
+  // 8.1 处理数据并完成API接口提交
+  await handleUpdateDraftAppConfig(props.app_id, {
+    workflows: activateWorkflows.value.map((activateWorkflow) => activateWorkflow.id),
+  })
 
-    // 8.2 接口更新更新成功，同步表单信息
-    originWorkflows.value = activateWorkflows.value
-    await nextTick()
+  // 8.2 接口更新更新成功，同步表单信息
+  originWorkflows.value = activateWorkflows.value
+  await nextTick()
 
-    // 8.3 双向同步更新props中的数据
-    emits('update:workflows', activateWorkflows.value)
+  // 8.3 双向同步更新props中的数据
+  emits('update:workflows', activateWorkflows.value)
 
-    // 8.4 隐藏模态窗
-    handleCancelWorkflowsModal()
-  } catch (e) {}
+  // 8.4 隐藏模态窗
+  handleCancelWorkflowsModal()
 }
 
 // 10.监听草稿配置关联的工作流列表

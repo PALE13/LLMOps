@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os.path
 from typing import Union, Type, Any, Optional
 
@@ -39,8 +42,8 @@ class Provider(BaseModel):
             # 3.将类型的第一个字符转换成大写，其他不变，并构建类映射
             symbol_name = model_type[0].upper() + model_type[1:]
             provider["model_class_map"][model_type] = dynamic_import(
-                f"internal.core.language_model.providers.{provider_entity.name}.{model_type}",
-                symbol_name
+                f"internal.core.language_model.providers.{provider_entity.name}.chat",
+                "Chat"
             )
 
         # 4.获取当前类所在的位置，provider提供商所在的位置

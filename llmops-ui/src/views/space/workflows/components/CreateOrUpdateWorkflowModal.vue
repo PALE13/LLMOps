@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 import { type Form, type ValidatedError } from '@arco-design/web-vue'
 import { useCreateWorkflow, useGetWorkflow, useUpdateWorkflow } from '@/hooks/use-workflow'
-import { uploadImage } from '@/services/upload-file'
+import { useUploadImage } from '@/hooks/use-upload-file'
 
 // 1.定义自定义组件所需数据
 const props = defineProps({
@@ -14,6 +14,7 @@ const emits = defineEmits(['update:visible', 'update:workflow_id'])
 const { loading: createWorkflowLoading, handleCreateWorkflow } = useCreateWorkflow()
 const { loading: updateWorkflowLoading, handleUpdateWorkflow } = useUpdateWorkflow()
 const { workflow, loadWorkflow } = useGetWorkflow()
+const { image_url, handleUploadImage } = useUploadImage()
 const defaultForm = {
   fileList: [] as any,
   icon: '',
@@ -120,9 +121,9 @@ watch(
                 // 2.使用普通异步函数完成上传
                 const uploadTask = async () => {
                   try {
-                    const resp = await uploadImage(fileItem.file as File)
-                    form.icon = resp.data.image_url
-                    onSuccess(resp)
+                    await handleUploadImage(fileItem.file as File)
+                    form.icon = image_url
+                    onSuccess(image_url)
                   } catch (error) {
                     onError(error)
                   }

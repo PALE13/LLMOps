@@ -52,7 +52,6 @@ class IndexingService(BaseService):
         documents = self.db.session.query(Document).filter(
             Document.id.in_(document_ids)
         ).all()
-
         # 2.执行循环遍历所有文档完成对每个文档的构建
         for document in documents:
             try:
@@ -72,7 +71,7 @@ class IndexingService(BaseService):
                 self._completed(document, lc_segments)
 
             except Exception as e:
-                logging.exception(f"构建文档发生错误，错误信息：{str(e)}")
+                logging.exception(f"构建文档发生错误，错误信息:%(error)s",{"error": e})
                 self.update(
                     document,
                     status=DocumentStatus.ERROR,
@@ -300,13 +299,11 @@ class IndexingService(BaseService):
             keyword_table = {
                 field: set(value) for field, value in keyword_table_record.keyword_table.items()
             }
-
             # 4.循环将新关键词添加到关键词表中
             for keyword in keywords:
                 if keyword not in keyword_table:
                     keyword_table[keyword] = set()
                 keyword_table[keyword].add(lc_segment.metadata["segment_id"])
-
             # 5.更新关键词表
             self.update(
                 keyword_table_record,

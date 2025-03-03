@@ -270,7 +270,7 @@ class WorkflowService(BaseService):
                 "graph": workflow.draft_graph,
                 "state": [],
                 "latency": 0,
-                "status": WorkflowResultStatus.RUNNING,
+                "status": WorkflowResultStatus.RUNNING
             })
 
             # 4.调用stream服务获取工具信息

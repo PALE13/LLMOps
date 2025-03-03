@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { type GraphNode, useVueFlow } from '@vue-flow/core'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useVueFlow } from '@vue-flow/core'
 import { cloneDeep } from 'lodash'
 import { getReferencedVariables } from '@/utils/helper'
 import { useGetDatasetsWithPage } from '@/hooks/use-dataset'
-import { Message } from '@arco-design/web-vue'
+import { Message, type ValidatedError } from '@arco-design/web-vue'
 
 // 1.定义自定义组件所需数据
 const props = defineProps({
   visible: { type: Boolean, required: true, default: false },
-  node: { type: Object as GraphNode, required: true, default: {} },
+  node: {
+    type: Object as any,
+    required: true,
+    default: () => {
+      return {}
+    },
+  },
   loading: { type: Boolean, required: true, default: false },
 })
 const emits = defineEmits(['update:visible', 'updateNode'])
@@ -48,12 +54,12 @@ const removeDataset = (idx: number) => {
 // 5.知识库选择处理器
 const handleSelectDataset = (idx: number) => {
   // 5.1 提取对应的知识库id
-  const dataset = datasets[idx]
+  const dataset = datasets.value[idx]
 
   // 5.2 检测id是否选中，如果是选中则删除
-  if (form.value.datasets.some((activateDataset) => activateDataset.id === dataset.id)) {
+  if (form.value.datasets.some((activateDataset: any) => activateDataset.id === dataset.id)) {
     form.value.datasets = form.value.datasets.filter(
-      (activateDataset) => activateDataset.id !== dataset.id,
+      (activateDataset: any) => activateDataset.id !== dataset.id,
     )
   } else {
     // 5.3 检测已关联的知识库数量
@@ -85,12 +91,12 @@ const onSubmit = async ({ errors }: { errors: Record<string, ValidatedError> | u
     id: props.node.id,
     title: form.value.title,
     description: form.value.description,
-    dataset_ids: cloneDatasets.map((dataset) => {
+    dataset_ids: cloneDatasets.map((dataset: any) => {
       return dataset.id
     }),
     meta: { datasets: cloneDatasets },
     retrieval_config: cloneDeep(form.value.retrieval_config),
-    inputs: cloneInputs.map((input) => {
+    inputs: cloneInputs.map((input: any) => {
       return {
         name: input.name,
         description: '',
@@ -129,7 +135,7 @@ watch(
         retrieval_strategy: 'semantic',
         score: 0,
       },
-      inputs: cloneInputs.map((input) => {
+      inputs: cloneInputs.map((input: any) => {
         // 7.1 计算引用的变量值信息
         const ref =
           input.value.type === 'ref'
@@ -162,6 +168,10 @@ watch(
   },
   { immediate: true },
 )
+
+onMounted(() => {
+  loadDatasets(true)
+})
 </script>
 
 <template>
@@ -466,7 +476,7 @@ watch(
             <div
               v-for="(dataset, idx) in datasets"
               :key="dataset.id"
-              :class="`flex items-center gap-2 border px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-700 ${form.datasets.some((activateDataset) => activateDataset.id === dataset.id) ? 'bg-blue-50 border-blue-700' : ''}`"
+              :class="`flex items-center gap-2 border px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-700 ${form.datasets.some((activateDataset: any) => activateDataset.id === dataset.id) ? 'bg-blue-50 border-blue-700' : ''}`"
               @click="() => handleSelectDataset(idx)"
             >
               <a-avatar

@@ -27,7 +27,7 @@ export const generateRandomString = (length: number): string => {
 // 构建邻接表，邻接表的key为节点的id，值为该节点的所有直接子节点(后继节点)
 export const buildAdjList = (edges: GraphEdge[]): Map<string, string[]> => {
   // 1.构建邻接表，类型为映射
-  let adjList = new Map<string, string[]>()
+  const adjList = new Map<string, string[]>()
 
   // 2.循环遍历所有边信息
   edges.forEach((edge) => {
@@ -44,7 +44,7 @@ export const buildAdjList = (edges: GraphEdge[]): Map<string, string[]> => {
 // 构建逆邻接表，逆邻接表的key是每个节点的id，值为该节点的直接父节点
 export const buildReverseAdjList = (edges: GraphEdge[]): Map<string, string[]> => {
   // 1.构建逆邻接表，类型为映射
-  let reverseAdjList = new Map<string, string[]>()
+  const reverseAdjList = new Map<string, string[]>()
 
   // 2.循环遍历所有边信息
   edges.forEach((edge) => {

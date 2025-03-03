@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, type PropType, ref, watch } from 'vue'
+import { nextTick, onMounted, type PropType, ref, watch } from 'vue'
 import { useUpdateDraftAppConfig } from '@/hooks/use-app'
 import { useGetDatasetsWithPage } from '@/hooks/use-dataset'
 import { cloneDeep, isEqual } from 'lodash'
@@ -8,7 +8,13 @@ import { Message } from '@arco-design/web-vue'
 // 1.定义自定义组件所需数据
 const props = defineProps({
   app_id: { type: String, default: '', required: true },
-  retrieval_config: { type: Object, default: {}, required: true },
+  retrieval_config: {
+    type: Object,
+    default: () => {
+      return {}
+    },
+    required: true,
+  },
   datasets: {
     type: Array as PropType<
       {
@@ -18,7 +24,7 @@ const props = defineProps({
         description: string
       }[]
     >,
-    default: [],
+    default: () => [],
     required: true,
   },
 })
@@ -80,7 +86,7 @@ const handleCancelRetrievalConfigModal = () => {
 // 7.知识库选择处理器
 const handleSelectDataset = (idx: number) => {
   // 7.1 提取对应的知识库id
-  const dataset = apiDatasets[idx]
+  const dataset = apiDatasets.value[idx]
 
   // 7.2 检测id是否选中，如果是选中则删除
   if (activateDatasets.value.some((activateDataset) => activateDataset.id === dataset.id)) {
@@ -105,41 +111,37 @@ const handleSelectDataset = (idx: number) => {
 
 // 8.提交更新关联知识库
 const handleSubmitDatasets = async () => {
-  try {
-    // 8.1 处理数据并完成API接口提交
-    await handleUpdateDraftAppConfig(props.app_id, {
-      datasets: activateDatasets.value.map((activateDataset) => activateDataset.id),
-    })
+  // 8.1 处理数据并完成API接口提交
+  await handleUpdateDraftAppConfig(props.app_id, {
+    datasets: activateDatasets.value.map((activateDataset) => activateDataset.id),
+  })
 
-    // 8.2 接口更新更新成功，同步表单信息
-    originDatasets.value = activateDatasets.value
-    await nextTick()
+  // 8.2 接口更新更新成功，同步表单信息
+  originDatasets.value = activateDatasets.value
+  await nextTick()
 
-    // 8.3 双向同步更新props中的数据
-    emits('update:datasets', activateDatasets.value)
+  // 8.3 双向同步更新props中的数据
+  emits('update:datasets', activateDatasets.value)
 
-    // 8.4 隐藏模态窗
-    handleCancelDatasetsModal()
-  } catch (e) {}
+  // 8.4 隐藏模态窗
+  handleCancelDatasetsModal()
 }
 
 // 9.提交更新检索配置
 const handleSubmitRetrievalConfig = async () => {
-  try {
-    // 9.1 处理数据并完成API接口提交
-    await handleUpdateDraftAppConfig(props.app_id, {
-      retrieval_config: retrievalConfigForm.value as any,
-    })
+  // 9.1 处理数据并完成API接口提交
+  await handleUpdateDraftAppConfig(props.app_id, {
+    retrieval_config: retrievalConfigForm.value as any,
+  })
 
-    // 9.2 接口更新更新成功，同步表单信息
-    originRetrievalConfigForm.value = retrievalConfigForm.value
+  // 9.2 接口更新更新成功，同步表单信息
+  originRetrievalConfigForm.value = retrievalConfigForm.value
 
-    // 9.3 双向同步更新props中的数据
-    emits('update:retrieval_config', retrievalConfigForm.value)
+  // 9.3 双向同步更新props中的数据
+  emits('update:retrieval_config', retrievalConfigForm.value)
 
-    // 9.4 隐藏模态窗
-    handleCancelRetrievalConfigModal()
-  } catch (e) {}
+  // 9.4 隐藏模态窗
+  handleCancelRetrievalConfigModal()
 }
 
 // 10.监听草稿配置关联的知识库列表
@@ -198,10 +200,14 @@ watch(
       await loadDatasets(true)
     } else {
       // 12.2 隐藏状态，清空数据
-      apiDatasets.splice(0, apiDatasets.length)
+      apiDatasets.value.splice(0, apiDatasets.value.length)
     }
   },
 )
+
+onMounted(() => {
+  loadDatasets(true)
+})
 </script>
 
 <template>

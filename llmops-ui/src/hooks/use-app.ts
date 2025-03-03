@@ -1,4 +1,4 @@
-import { onMounted, reactive, ref } from 'vue'
+import { ref } from 'vue'
 import {
   cancelPublish,
   copyApp,
@@ -29,7 +29,7 @@ import type {
   UpdateAppRequest,
   UpdateDraftAppConfigRequest,
 } from '@/models/app'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export const useGetApp = () => {
   // 1.定义hooks所需的基础数据
@@ -52,7 +52,6 @@ export const useGetApp = () => {
 
 export const useGetAppsWithPage = () => {
   // 1.定义hooks所需数据
-  const route = useRoute()
   const loading = ref(false)
   const apps = ref<GetAppsWithPageResponse['data']['list']>([])
   const defaultPaginator = {
@@ -64,7 +63,7 @@ export const useGetAppsWithPage = () => {
   const paginator = ref({ ...defaultPaginator })
 
   // 2.定义加载数据函数
-  const loadApps = async (init: boolean = false) => {
+  const loadApps = async (init: boolean = false, search_word: string = '') => {
     // 2.1 判断是否是初始化，如果是的话则先初始化分页器
     if (init) {
       paginator.value = defaultPaginator
@@ -79,7 +78,7 @@ export const useGetAppsWithPage = () => {
       const resp = await getAppsWithPage({
         current_page: paginator.value.current_page,
         page_size: paginator.value.page_size,
-        search_word: String(route.query?.search_word ?? ''),
+        search_word: search_word,
       })
       const data = resp.data
 
@@ -249,43 +248,40 @@ export const useGetPublishHistoriesWithPage = () => {
     total_page: 0,
     total_record: 0,
   }
-  const publishHistories = reactive<Array<Record<string, any>>>([])
-  const paginator = reactive({ ...defaultPaginator })
+  const publishHistories = ref<Record<string, any>[]>([])
+  const paginator = ref(defaultPaginator)
 
   // 2.定义加载数据函数
   const loadPublishHistories = async (app_id: string, init: boolean = false) => {
     try {
       // 2.1 判断是否为初始化，如果是则先初始化分页器
       if (init) {
-        Object.assign(paginator, { ...defaultPaginator })
-      } else if (paginator.current_page > paginator.total_page) {
+        paginator.value = defaultPaginator
+      } else if (paginator.value.current_page > paginator.value.total_page) {
         return
       }
 
       // 2.2 调用API接口获取数据
       loading.value = true
       const resp = await getPublishHistoriesWithPage(app_id, {
-        current_page: paginator.current_page,
-        page_size: paginator.page_size,
+        current_page: paginator.value.current_page,
+        page_size: paginator.value.page_size,
       })
       const data = resp.data
 
       // 2.3 更新分页器数据
-      paginator.current_page = data.paginator.current_page
-      paginator.page_size = data.paginator.page_size
-      paginator.total_page = data.paginator.total_page
-      paginator.total_record = data.paginator.total_record
+      paginator.value = data.paginator
 
       // 2.4 是否存在更多数据
-      if (paginator.current_page <= paginator.total_page) {
-        paginator.current_page += 1
+      if (paginator.value.current_page <= paginator.value.total_page) {
+        paginator.value.current_page += 1
       }
 
       // 2.5 检测是追加数据还是覆盖数据
       if (init) {
-        publishHistories.splice(0, publishHistories.length, ...data.list)
+        publishHistories.value = data.list
       } else {
-        publishHistories.push(...data.list)
+        publishHistories.value.push(...data.list)
       }
     } finally {
       loading.value = false
@@ -318,11 +314,10 @@ export const useFallbackHistoryToDraft = () => {
   return { loading, handleFallbackHistoryToDraft }
 }
 
-export const useGetDraftAppConfig = (app_id: string) => {
+export const useGetDraftAppConfig = () => {
   // 1.定义hooks所需数据
   const loading = ref(false)
   const draftAppConfigForm = ref<Record<string, any>>({})
-  // const draftAppConfigForm = reactive<Record<string, any>>({})
 
   // 2.定义加载数据函数
   const loadDraftAppConfig = async (app_id: string) => {
@@ -351,8 +346,6 @@ export const useGetDraftAppConfig = (app_id: string) => {
       loading.value = false
     }
   }
-
-  onMounted(async () => await loadDraftAppConfig(app_id))
 
   return { loading, draftAppConfigForm, loadDraftAppConfig }
 }

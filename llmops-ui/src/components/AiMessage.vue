@@ -3,16 +3,27 @@ import { computed, type PropType } from 'vue'
 import MarkdownIt from 'markdown-it'
 import DotFlashing from '@/components/DotFlashing.vue'
 import AgentThought from './AgentThought.vue'
+import 'github-markdown-css'
 
 // 1.定义自定义组件所需数据
 const props = defineProps({
-  app: { type: Object, default: {}, required: true },
+  app: {
+    type: Object,
+    default: () => {
+      return {}
+    },
+    required: true,
+  },
   answer: { type: String, default: '', required: true },
   loading: { type: Boolean, default: false, required: false },
   latency: { type: Number, default: 0, required: false },
   total_token_count: { type: Number, default: 0, required: false },
-  agent_thoughts: { type: Array as PropType<Record<string, any>[]>, default: [], required: true },
-  suggested_questions: { type: Array as PropType<string[]>, default: [], required: false },
+  agent_thoughts: {
+    type: Array as PropType<Record<string, any>[]>,
+    default: () => [],
+    required: true,
+  },
+  suggested_questions: { type: Array as PropType<string[]>, default: () => [], required: false },
   message_class: { type: String, default: '!bg-gray-100', required: false },
 })
 const emits = defineEmits(['selectSuggestedQuestion'])
@@ -83,13 +94,4 @@ const compiledMarkdown = computed(() => {
   </div>
 </template>
 
-<style>
-/* 保留 GitHub Markdown 样式，同时使用 TailwindCSS 自定义列表样式 */
-.markdown-body {
-  font-size: 14px;
-}
-
-.markdown-body pre {
-  @apply bg-gray-700 text-white;
-}
-</style>
+<style scoped></style>

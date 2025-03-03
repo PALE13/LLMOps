@@ -1,23 +1,26 @@
 <script setup lang="ts">
+import { computed, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import moment from 'moment'
+import type { ValidatedError } from '@arco-design/web-vue'
 import {
   useCreateOrUpdateDataset,
   useDeleteDataset,
+  useGetDataset,
   useGetDatasetsWithPage,
 } from '@/hooks/use-dataset'
-import { getDataset } from '@/services/dataset'
-import { uploadImage } from '@/services/upload-file'
-import moment from 'moment'
-import type { ValidatedError } from '@arco-design/web-vue'
+import { useUploadImage } from '@/hooks/use-upload-file'
 
-let updateDatasetID = ''
+// 1.定义页面所需数据
+const route = useRoute()
 const props = defineProps({
-  createType: {
-    type: String,
-    required: true,
-  },
+  createType: { type: String, required: true },
 })
-const emits = defineEmits(['update-create-type'])
+const emits = defineEmits(['update:create-type'])
+let updateDatasetID = ''
+const { dataset, loadDataset } = useGetDataset()
 const { loading, datasets, paginator, loadDatasets } = useGetDatasetsWithPage()
+const { image_url, handleUploadImage } = useUploadImage()
 const {
   loading: submitLoading,
   form,
@@ -27,37 +30,39 @@ const {
   updateShowUpdateModal,
 } = useCreateOrUpdateDataset()
 const { handleDelete } = useDeleteDataset()
+const search_word = computed(() => {
+  return String(route.query?.search_word ?? '')
+})
 
-// 滚动数据分页处理器
+// 2.定义滚动数据分页处理器
 const handleScroll = async (event: UIEvent) => {
-  // 1.获取滚动距离、可滚动的最大距离、客户端/浏览器窗口的高度
+  // 2.1 获取滚动距离、可滚动的最大距离、客户端/浏览器窗口的高度
   const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLElement
 
-  // 2.判断是否滑动到底部
+  // 2.2 判断是否滑动到底部
   if (scrollTop + clientHeight >= scrollHeight - 10) {
     if (loading.value) return
-    await loadDatasets()
+    await loadDatasets(false, search_word.value)
   }
 }
 
-// 编辑知识库处理器
+// 3.定义编辑知识库处理器
 const handleUpdate = (dataset_id: string) => {
   updateShowUpdateModal(true, async () => {
     // 1.调用api获取知识库详情
-    const resp = await getDataset(dataset_id)
-    const data = resp.data
+    await loadDataset(dataset_id)
     updateDatasetID = dataset_id
 
     // 2.更新表单数据
     formRef.value?.resetFields()
-    form.fileList = [{ uid: '1', name: '知识库图标', url: data.icon }]
-    form.icon = data.icon
-    form.name = data.name
-    form.description = data.description
+    form.value.fileList = [{ uid: '1', name: '知识库图标', url: dataset.value.icon }]
+    form.value.icon = dataset.value.icon
+    form.value.name = dataset.value.name
+    form.value.description = dataset.value.description
   })
 }
 
-// 取消显示模态窗
+// 4.定义取消显示模态窗
 const handleCancel = () => {
   updateShowUpdateModal(false, async () => {
     // 1.重置整个表单数据
@@ -65,11 +70,11 @@ const handleCancel = () => {
     formRef.value?.resetFields()
 
     // 2.隐藏表单模态窗
-    emits('update-create-type', '')
+    emits('update:create-type', '')
   })
 }
 
-// 提交模态窗
+// 5.定义提交模态窗处理器
 const handleSubmit = async ({ errors }: { errors: Record<string, ValidatedError> | undefined }) => {
   // 1.如果出错则直接抛出
   if (errors) return
@@ -81,6 +86,17 @@ const handleSubmit = async ({ errors }: { errors: Record<string, ValidatedError>
   handleCancel()
   await loadDatasets(true)
 }
+
+// 6.监听路由query的变化
+watch(
+  () => route.query?.search_word,
+  (newValue) => loadDatasets(true, String(newValue)),
+)
+
+// 7.页面DOM加载后加载数据
+onMounted(() => {
+  loadDatasets(true, search_word.value)
+})
 </script>
 
 <template>
@@ -144,7 +160,7 @@ const handleSubmit = async ({ errors }: { errors: Record<string, ValidatedError>
               <icon-user />
             </a-avatar>
             <div class="text-xs text-gray-400">
-              慕小课 · 最近编辑
+              管理员 · 最近编辑
               {{ moment(dataset.created_at * 1000).format('MM-DD HH:mm') }}
             </div>
           </div>
@@ -215,9 +231,9 @@ const handleSubmit = async ({ errors }: { errors: Record<string, ValidatedError>
                   // 2.使用普通异步函数完成上传
                   const uploadTask = async () => {
                     try {
-                      const resp = await uploadImage(fileItem.file as File)
-                      form.icon = resp.data.image_url
-                      onSuccess(resp)
+                      await handleUploadImage(fileItem.file as File)
+                      form.icon = image_url
+                      onSuccess(image_url)
                     } catch (error) {
                       onError(error)
                     }

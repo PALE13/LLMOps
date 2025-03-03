@@ -1,5 +1,5 @@
 // api请求接口前缀
-export const apiPrefix: string = 'http://localhost:5000'
+export const apiPrefix: string = import.meta.env.VITE_API_PREFIX
 
 // 业务状态码
 export const httpCode = {

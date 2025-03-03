@@ -13,8 +13,10 @@ from sqlalchemy import (
     Float,
     text,
     PrimaryKeyConstraint, func, asc,
+    Index
 )
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import relationship
 
 from internal.extension.database_extension import db
 
@@ -24,6 +26,8 @@ class Conversation(db.Model):
     __tablename__ = "conversation"
     __table_args__ = (
         PrimaryKeyConstraint("id", name="pk_conversation_id"),
+        Index("conversation_app_id_idx", "app_id"),
+        Index("conversation_created_by_idx", "created_by"),
     )
 
     id = Column(UUID, nullable=False, server_default=text("uuid_generate_v4()"))
@@ -60,6 +64,9 @@ class Message(db.Model):
     __tablename__ = "message"
     __table_args__ = (
         PrimaryKeyConstraint("id", name="pk_message_id"),
+        Index("message_app_id_idx", "app_id"),
+        Index("message_conversation_id_idx", "conversation_id"),
+        Index("message_created_by_idx", "created_by"),
     )
 
     id = Column(UUID, nullable=False, server_default=text("uuid_generate_v4()"))
@@ -104,12 +111,24 @@ class Message(db.Model):
     )
     created_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP(0)'))
 
-    @property
-    def agent_thoughts(self) -> list["MessageAgentThought"]:
-        """只读属性，返回该消息对应的智能体推理过程列表"""
-        return db.session.query(MessageAgentThought).filter(
-            MessageAgentThought.message_id == self.id,
-        ).order_by(asc("position")).all()
+
+    # 智能体推理列表，创建表关联
+    agent_thoughts = relationship(
+        "MessageAgentThought",
+        backref="msg",
+        lazy="selectin",
+        passive_deletes="all",
+        uselist=True,
+        foreign_keys=[id],
+        primaryjoin="MessageAgentThought.message_id == Message.id",
+    )
+
+    # @property
+    # def agent_thoughts(self) -> list["MessageAgentThought"]:
+    #     """只读属性，返回该消息对应的智能体推理过程列表"""
+    #     return db.session.query(MessageAgentThought).filter(
+    #         MessageAgentThought.message_id == self.id,
+    #     ).order_by(asc("position")).all()
 
 
 
@@ -118,6 +137,10 @@ class MessageAgentThought(db.Model):
     __tablename__ = "message_agent_thought"
     __table_args__ = (
         PrimaryKeyConstraint("id", name="pk_message_agent_thought_id"),
+        Index("message_agent_thought_app_id_idx","app_id"),
+        Index("message_agent_thought_conversation_id_idx", "conversation_id"),
+        Index("message_agent_thought_message_id_idx", "message_id"),
+        Index("message_agent_thought_created_by_idx", "created_by"),
     )
 
     id = Column(UUID, nullable=False, server_default=text("uuid_generate_v4()"))

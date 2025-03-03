@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   useDeleteApiKey,
@@ -29,6 +29,12 @@ const createOrUpdateApiKeyModalVisible = ref(false)
 const updateApiKeyId = ref('')
 const updateApiKeyIsActive = ref(false)
 const updateApiKeyRemark = ref('')
+const req = computed(() => {
+  return {
+    current_page: Number(route.query?.current_page ?? 1),
+    page_size: Number(route.query?.page_size ?? 20),
+  }
+})
 
 // 2.定义写入剪切板函数
 const copyToClipboard = async (text: string) => {
@@ -42,7 +48,7 @@ const copyToClipboard = async (text: string) => {
 
 // 2.页面加载完毕后获取api秘钥列表数据
 onMounted(async () => {
-  await loadApiKeys(true)
+  await loadApiKeys(true, req.value)
 })
 
 // 3.监听create_api_key是否开启，执行创建操作
@@ -62,7 +68,7 @@ watch(
   () => route.query,
   async (newQuery, oldQuery) => {
     if (newQuery.current_page != oldQuery.current_page) {
-      await loadApiKeys()
+      await loadApiKeys(false, req.value)
     }
   },
 )
@@ -206,7 +212,7 @@ watch(
                     @click="
                       () =>
                         handleDeleteApiKey(record.id, async () => {
-                          await loadApiKeys()
+                          await loadApiKeys(false, req)
                         })
                     "
                   >
@@ -226,7 +232,7 @@ watch(
       v-model:is_active="updateApiKeyIsActive"
       v-model:remark="updateApiKeyRemark"
       @update:visible="(value) => emits('update:create_api_key', value)"
-      :callback="async () => await loadApiKeys()"
+      :callback="async () => await loadApiKeys(false, req)"
     />
   </div>
 </template>

@@ -5,7 +5,13 @@ import { ref } from 'vue'
 // 1.定义自定义组件所需数据
 const props = defineProps({
   app_id: { type: String, required: true },
-  long_term_memory: { type: Object, default: { enable: false }, required: true },
+  long_term_memory: {
+    type: Object,
+    default: () => {
+      return { enable: false }
+    },
+    required: true,
+  },
 })
 const { debug_conversation_summary, loadDebugConversationSummary } =
   useGetDebugConversationSummary()

@@ -7,12 +7,6 @@ from typing import Any
 from .default_config import DEFAULT_CONFIG
 
 
-import os
-from typing import Any
-
-from .default_config import DEFAULT_CONFIG
-
-
 def _get_env(key: str) -> Any:
     """从环境变量中获取配置项，如果找不到则返回默认值"""
     return os.getenv(key, DEFAULT_CONFIG.get(key))
@@ -37,6 +31,12 @@ class Config:
         }
         self.SQLALCHEMY_ECHO = _get_bool_env("SQLALCHEMY_ECHO")
 
+        # Weaviate向量库配置
+        self.WEAVIATE_HTTP_HOST = _get_env("WEAVIATE_HTTP_HOST")
+        self.WEAVIATE_HTTP_PORT = _get_env("WEAVIATE_HTTP_PORT")
+        self.WEAVIATE_GRPC_HOST = _get_env("WEAVIATE_GRPC_HOST")
+        self.WEAVIATE_GRPC_PORT = _get_env("WEAVIATE_GRPC_PORT")
+
         # Redis配置
         self.REDIS_HOST = _get_env("REDIS_HOST")
         self.REDIS_PORT = _get_env("REDIS_PORT")
@@ -47,8 +47,8 @@ class Config:
 
         # Celery配置
         self.CELERY = {
-            "broker_url": f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{int(_get_env('CELERY_BROKER_DB'))}",
-            "result_backend": f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{int(_get_env('CELERY_RESULT_BACKEND_DB'))}",
+            "broker_url": f"redis://{self.REDIS_USERNAME}:{self.REDIS_PASSWORD}@{self.REDIS_HOST}:{self.REDIS_PORT}/{int(_get_env('CELERY_BROKER_DB'))}",
+            "result_backend": f"redis://{self.REDIS_USERNAME}:{self.REDIS_PASSWORD}@{self.REDIS_HOST}:{self.REDIS_PORT}/{int(_get_env('CELERY_RESULT_BACKEND_DB'))}",
             "task_ignore_result": _get_bool_env("CELERY_TASK_IGNORE_RESULT"),
             "result_expires": int(_get_env("CELERY_RESULT_EXPIRES")),
             "broker_connection_retry_on_startup": _get_bool_env("CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP"),

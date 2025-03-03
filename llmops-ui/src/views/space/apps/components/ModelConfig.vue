@@ -7,7 +7,13 @@ import { useUpdateDraftAppConfig } from '@/hooks/use-app'
 // 1.定义自定义组件所需数据
 const props = defineProps({
   app_id: { type: String, default: '', required: true },
-  model_config: { type: Object, default: {}, required: true },
+  model_config: {
+    type: Object,
+    default: () => {
+      return {}
+    },
+    required: true,
+  },
   dialog_round: { type: Number, default: 3, required: true },
 })
 const emits = defineEmits(['update:model_config'])
@@ -162,6 +168,7 @@ onMounted(() => {
         <a-spin :loading="getLanguageModelLoading" class="w-full">
           <div
             v-for="parameter in language_model?.parameters"
+            :key="parameter.name"
             class="flex items-center gap-2 h-8 mb-4"
           >
             <!-- 字段标签 -->

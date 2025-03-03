@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { type GraphNode, useVueFlow } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 import { cloneDeep } from 'lodash'
 import { getReferencedVariables } from '@/utils/helper'
-import { Message } from '@arco-design/web-vue'
+import { Message, type ValidatedError } from '@arco-design/web-vue'
 
 // 1.定义自定义组件所需数据
 const props = defineProps({
   visible: { type: Boolean, required: true, default: false },
-  node: { type: Object as GraphNode, required: true, default: {} },
+  node: {
+    type: Object as any,
+    required: true,
+    default: () => {
+      return {}
+    },
+  },
   loading: { type: Boolean, required: true, default: false },
 })
 const emits = defineEmits(['update:visible', 'updateNode'])
@@ -98,7 +104,7 @@ const onSubmit = async ({ errors }: { errors: Record<string, ValidatedError> | u
 watch(
   () => props.node,
   (newNode) => {
-    const cloneInputs = cloneDeep(newNode.data.inputs).map((input) => {
+    const cloneInputs = cloneDeep(newNode.data.inputs).map((input: any) => {
       // 5.1 计算引用的变量值信息
       const ref =
         input.value.type === 'ref'
@@ -132,9 +138,9 @@ watch(
       description: newNode.data.description,
       method: newNode.data.method,
       url: newNode.data.url,
-      paramsInputs: cloneInputs.filter((input) => input.meta_type === 'params'),
-      headersInputs: cloneInputs.filter((input) => input.meta_type === 'headers'),
-      bodyInputs: cloneInputs.filter((input) => input.meta_type === 'body'),
+      paramsInputs: cloneInputs.filter((input: any) => input.meta_type === 'params'),
+      headersInputs: cloneInputs.filter((input: any) => input.meta_type === 'headers'),
+      bodyInputs: cloneInputs.filter((input: any) => input.meta_type === 'body'),
       outputs: [
         { name: 'status_code', type: 'int', value: { type: 'generated', content: 0 } },
         { name: 'text', type: 'string', value: { type: 'generated', content: '' } },

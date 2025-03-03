@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { Message, Modal } from '@arco-design/web-vue'
+import type { BasePaginatorRequest } from '@/models/base'
 import {
   type CreateApiKeyRequest,
   type GetApiKeysWithPageResponse,
@@ -12,11 +13,9 @@ import {
   updateApiKey,
   updateApiKeyIsActive,
 } from '@/services/api-key'
-import { Message, Modal } from '@arco-design/web-vue'
 
 export const useGetApiKeysWithPage = () => {
   // 1.定义hooks所需数据
-  const route = useRoute()
   const loading = ref(false)
   const api_keys = ref<GetApiKeysWithPageResponse['data']['list']>([])
   const defaultPaginator = {
@@ -28,7 +27,13 @@ export const useGetApiKeysWithPage = () => {
   const paginator = ref({ ...defaultPaginator })
 
   // 2.定义加载数据函数
-  const loadApiKeys = async (init: boolean = false) => {
+  const loadApiKeys = async (
+    init: boolean = false,
+    req: BasePaginatorRequest = {
+      current_page: 1,
+      page_size: 20,
+    },
+  ) => {
     // 2.1 判断是否超过总页数，如果是则返回
     if (!init && paginator.value.current_page > paginator.value.total_page) {
       return
@@ -37,10 +42,7 @@ export const useGetApiKeysWithPage = () => {
     // 2.2 加载更多数据
     try {
       loading.value = true
-      const resp = await getApiKeysWithPage({
-        current_page: (route.query?.current_page || 1) as number,
-        page_size: (route.query?.page_size || 20) as number,
-      })
+      const resp = await getApiKeysWithPage(req)
       const data = resp.data
 
       // 2.3 更新分页器

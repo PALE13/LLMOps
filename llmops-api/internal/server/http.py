@@ -7,6 +7,7 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_weaviate import FlaskWeaviate
 from flask_login import LoginManager
 
 from config import Config
@@ -26,6 +27,7 @@ class Http(Flask):
             *args,
             conf: Config,
             db: SQLAlchemy,
+            weaviate: FlaskWeaviate,
             migrate: Migrate,
             router: Router,
             login_manager: LoginManager,
@@ -44,6 +46,7 @@ class Http(Flask):
 
         # 4.初始化flask扩展
         db.init_app(self)
+        weaviate.init_app(self)
         migrate.init_app(self, db, directory="internal/migration")
         redis_extension.init_app(self)
         celery_extension.init_app(self)

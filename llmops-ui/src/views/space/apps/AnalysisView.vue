@@ -138,7 +138,7 @@ onMounted(() => {
           <overview-indicator
             title="Token输出速度"
             help="衡量 LLM 的性能，统计 LLM 从请求到输出完毕这段期间内的 Tokens 输出速度。"
-            unit="Tokens/秒"
+            unit="Ts/秒"
             :data="app_analysis?.token_output_rate?.data"
             :pop="app_analysis?.token_output_rate?.pop"
           >

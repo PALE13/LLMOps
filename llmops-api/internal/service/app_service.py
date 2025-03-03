@@ -22,6 +22,7 @@ from langchain_core.runnables import RunnableParallel
 from langchain_openai import ChatOpenAI
 from redis import Redis
 from sqlalchemy import func, desc
+from sqlalchemy.orm import joinedload
 from werkzeug.datastructures import FileStorage
 
 from internal.core.agent.agents import FunctionCallAgent, AgentQueueManager, ReACTAgent
@@ -609,6 +610,7 @@ class AppService(BaseService):
             yield f"event: {agent_thought.event}\ndata:{json.dumps(data)}\n\n"
 
         # 22.将消息以及推理过程添加到数据库
+        # todo:将数据存储/更新操作转为同步
         thread = Thread(
             target=self.conversation_service.save_agent_thoughts,
             kwargs={
@@ -654,7 +656,7 @@ class AppService(BaseService):
 
         # 5.执行分页并查询数据
         messages = paginator.paginate(
-            self.db.session.query(Message).filter(
+            self.db.session.query(Message).options(joinedload(Message.agent_thoughts)).filter(
                 Message.conversation_id == debug_conversation.id,
                 Message.status.in_([MessageStatus.STOP, MessageStatus.NORMAL]),
                 Message.answer != "",

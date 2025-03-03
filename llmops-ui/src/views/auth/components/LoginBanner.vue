@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import bannerImage from '@/assets/images/login-banner.png'
+import BannerImage from '@/assets/images/login-banner.png'
 
 // 轮播图列表
 const carousels = [
   {
     slogan: '开箱即用的高质量AI编排模板',
     subSlogan: '丰富的应用组件，覆盖大多数典型业务场景',
-    image: bannerImage,
+    image: BannerImage,
   },
   {
     slogan: '零代码5分钟编排原生AI应用',
     subSlogan: '高效开发你的AI原生应用',
-    image: bannerImage,
+    image: BannerImage,
   },
 ]
 </script>

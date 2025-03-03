@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from abc import ABC
 from enum import Enum
@@ -74,7 +76,6 @@ class BaseLanguageModel(LCBaseLanguageModel, ABC):
     """基础语言模型"""
     features: list[ModelFeature] = Field(default_factory=list)  # 模型特性
     metadata: dict[str, Any] = Field(default_factory=dict)  # 模型元数据信息
-
 
     def get_pricing(self) -> tuple[float, float, float]:
         """获取LLM对应的价格信息，返回数据格式为(输入价格, 输出价格, 单位)"""

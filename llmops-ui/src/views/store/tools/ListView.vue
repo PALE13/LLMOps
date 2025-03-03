@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import moment from 'moment'
-import { getBuiltinTools, getCategories } from '@/services/builtin-tool'
 import { apiPrefix, typeMap } from '@/config'
+import { useGetBuiltinTools, useGetCategories } from '@/hooks/use-builtin-tool'
 
-// 声明变量
-const categories = reactive<Array<any>>([])
-const providers = reactive<Array<any>>([])
-const loading = ref<boolean>(false)
+// 1.定义页面所需数据
+const { categories, loadCategories } = useGetCategories()
+const { loading: getBuiltinToolsLoading, builtin_tools, loadBuiltinTools } = useGetBuiltinTools()
 const category = ref<string>('all')
 const search_word = ref<string>('')
 const showIdx = ref<number>(-1)
-const filterProviders = computed(() => {
-  return providers.filter((item) => {
+const filterBuiltinTools = computed(() => {
+  return builtin_tools.value.filter((item: any) => {
     // 分别检索分类信息+搜索词，只有同时符合的时候才返回数据
     const matchCategory = category.value === 'all' || item.category === category.value
     const matchSearchWord =
@@ -22,24 +21,15 @@ const filterProviders = computed(() => {
   })
 })
 
-onMounted(async () => {
-  const resp = await getCategories()
-  categories.push(...resp.data)
-})
-
-onMounted(async () => {
-  try {
-    loading.value = true
-    const resp = await getBuiltinTools()
-    providers.push(...resp.data)
-  } finally {
-    loading.value = false
-  }
+// 2.页面DOM加载完毕时获取数据
+onMounted(() => {
+  loadCategories()
+  loadBuiltinTools()
 })
 </script>
 
 <template>
-  <a-spin :loading="loading" class="block h-full w-full">
+  <a-spin :loading="getBuiltinToolsLoading" class="block h-full w-full">
     <div class="p-6 flex flex-col">
       <!-- 顶层标题+创建按钮 -->
       <div class="flex items-center justify-between mb-6">
@@ -51,7 +41,9 @@ onMounted(async () => {
           <div class="text-lg font-medium text-gray-900">插件广场</div>
         </div>
         <!-- 创建按钮 -->
-        <a-button type="primary" class="rounded-lg">创建自定义插件</a-button>
+        <router-link :to="{ name: 'space-tools-list', query: { create_type: 'tool' } }">
+          <a-button type="primary" class="rounded-lg">创建自定义插件</a-button>
+        </router-link>
       </div>
       <!-- 插件分类+搜索框 -->
       <div class="flex items-center justify-between mb-6">
@@ -83,28 +75,32 @@ onMounted(async () => {
       <!-- 底部插件列表 -->
       <a-row :gutter="[20, 20]" class="flex-1">
         <!-- 有数据的UI状态 -->
-        <a-col v-for="(provider, idx) in filterProviders" :key="provider.name" :span="6">
+        <a-col v-for="(builtinTool, idx) in filterBuiltinTools" :key="builtinTool.name" :span="6">
           <a-card hoverable class="cursor-pointer rounded-lg" @click="showIdx = idx">
             <!-- 顶部提供商名称 -->
             <div class="flex items-center gap-3 mb-3">
               <!-- 左侧图标 -->
-              <a-avatar :size="40" shape="square" :style="{ backgroundColor: provider.background }">
+              <a-avatar
+                :size="40"
+                shape="square"
+                :style="{ backgroundColor: builtinTool.background }"
+              >
                 <img
-                  :src="`${apiPrefix}/builtin-tools/${provider.name}/icon`"
-                  :alt="provider.name"
+                  :src="`${apiPrefix}/builtin-tools/${builtinTool.name}/icon`"
+                  :alt="builtinTool.name"
                 />
               </a-avatar>
               <!-- 右侧工具信息 -->
               <div class="flex flex-col">
-                <div class="text-base text-gray-900 font-bold">{{ provider.label }}</div>
+                <div class="text-base text-gray-900 font-bold">{{ builtinTool.label }}</div>
                 <div class="text-xs text-gray-500 line-clamp-1">
-                  提供商 {{ provider.name }} · {{ provider.tools.length }} 插件
+                  提供商 {{ builtinTool.name }} · {{ builtinTool.tools.length }} 插件
                 </div>
               </div>
             </div>
             <!-- 提供商的描述信息 -->
             <div class="leading-[18px] text-gray-500 h-[72px] line-clamp-4 mb-2">
-              {{ provider.description }}
+              {{ builtinTool.description }}
             </div>
             <!-- 提供商的发布信息 -->
             <div class="flex items-center gap-1.5">
@@ -113,13 +109,13 @@ onMounted(async () => {
               </a-avatar>
               <div class="text-xs text-gray-400">
                 慕课 · 发布时间
-                {{ moment(provider.created_at * 1000).format('MM-DD HH:mm') }}
+                {{ moment(builtinTool.created_at * 1000).format('MM-DD HH:mm') }}
               </div>
             </div>
           </a-card>
         </a-col>
         <!-- 没数据的UI状态 -->
-        <a-col v-if="filterProviders.length === 0" :span="24">
+        <a-col v-if="filterBuiltinTools.length === 0" :span="24">
           <a-empty
             description="没有可用的内置插件"
             class="h-[400px] flex flex-col items-center justify-center"
@@ -143,38 +139,38 @@ onMounted(async () => {
             <a-avatar
               :size="40"
               shape="square"
-              :style="{ backgroundColor: filterProviders[showIdx].background }"
+              :style="{ backgroundColor: filterBuiltinTools[showIdx].background }"
             >
               <img
-                :src="`${apiPrefix}/builtin-tools/${filterProviders[showIdx].name}/icon`"
-                :alt="filterProviders[showIdx].name"
+                :src="`${apiPrefix}/builtin-tools/${filterBuiltinTools[showIdx].name}/icon`"
+                :alt="filterBuiltinTools[showIdx].name"
               />
             </a-avatar>
             <!-- 右侧工具信息 -->
             <div class="flex flex-col">
               <div class="text-base text-gray-900 font-bold">
-                {{ filterProviders[showIdx].label }}
+                {{ filterBuiltinTools[showIdx].label }}
               </div>
               <div class="text-xs text-gray-500 line-clamp-1">
-                提供商 {{ filterProviders[showIdx].name }} ·
-                {{ filterProviders[showIdx].tools.length }} 插件
+                提供商 {{ filterBuiltinTools[showIdx].name }} ·
+                {{ filterBuiltinTools[showIdx].tools.length }} 插件
               </div>
             </div>
           </div>
           <!-- 提供商的描述信息 -->
           <div class="leading-[18px] text-gray-500 mb-2">
-            {{ filterProviders[showIdx].description }}
+            {{ filterBuiltinTools[showIdx].description }}
           </div>
           <!-- 分隔符 -->
           <hr class="my-4" />
           <!-- 提供者工具 -->
           <div class="flex flex-col gap-2">
             <div class="text-xs text-gray-500">
-              包含 {{ filterProviders[showIdx].tools.length }} 个工具
+              包含 {{ filterBuiltinTools[showIdx].tools.length }} 个工具
             </div>
             <!-- 工具列表 -->
             <a-card
-              v-for="tool in filterProviders[showIdx].tools"
+              v-for="tool in filterBuiltinTools[showIdx].tools"
               :key="tool.name"
               class="cursor-pointer flex flex-col rounded-xl"
             >

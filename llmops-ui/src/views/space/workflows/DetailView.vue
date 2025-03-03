@@ -170,7 +170,7 @@ const {
   handleUpdateDraftGraph,
   convertGraphToReq,
 } = useUpdateDraftGraph()
-const { loading: getDraftGraphLoading, nodes, edges, loadDraftGraph } = useGetDraftGraph()
+const { nodes, edges, loadDraftGraph } = useGetDraftGraph()
 const { loading: publishWorkflowLoading, handlePublishWorkflow } = usePublishWorkflow()
 const { handleCancelPublish } = useCancelPublishWorkflow()
 
@@ -276,7 +276,7 @@ const onChange = () => {
 // 定义节点更新事件
 const onUpdateNode = (node_data: Record<string, any>) => {
   // 获取该节点对应的索引
-  const idx = nodes.value.findIndex((item) => item.id === node_data.id)
+  const idx = nodes.value.findIndex((item: any) => item.id === node_data.id)
 
   // 检测是否存在数据，如果存在则更新
   if (idx !== -1) {
@@ -335,13 +335,13 @@ onConnect((connection) => {
 })
 
 // 工作流面板点击hooks
-onPaneClick((mouseEvent) => {
+onPaneClick(() => {
   isDebug.value = false
   selectedNode.value = null
 })
 
 // 工作流Edge边点击hooks
-onEdgeClick((edgeMouseEvent) => {
+onEdgeClick(() => {
   isDebug.value = false
   selectedNode.value = null
 })
@@ -358,7 +358,7 @@ onNodeClick((nodeMouseEvent) => {
 })
 
 // 工作流节点拖动停止hooks
-onNodeDragStop((nodeDragEvent) => {
+onNodeDragStop(() => {
   handleUpdateDraftGraph(
     String(route.params?.workflow_id ?? ''),
     convertGraphToReq(nodes.value, edges.value),
@@ -682,7 +682,18 @@ onMounted(async () => {
                 </a-dropdown>
               </div>
               <!-- 调试与预览 -->
-              <a-button type="text" size="small" class="px-2 rounded-lg" @click="isDebug = true">
+              <a-button
+                type="text"
+                size="small"
+                class="px-2 rounded-lg"
+                @click="
+                  () => {
+                    // 清空当前选中节点并设置调试模式
+                    selectedNode = null
+                    isDebug = true
+                  }
+                "
+              >
                 <template #icon>
                   <icon-play-arrow />
                 </template>

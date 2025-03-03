@@ -11,16 +11,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  // 前端代理
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'http://localhost:5000',
-  //       changeOrigin: true,
-  //       rewrite(path) {
-  //         return path.replace(/^\/api/, '')
-  //       },
-  //     },
-  //   },
-  // },
 })

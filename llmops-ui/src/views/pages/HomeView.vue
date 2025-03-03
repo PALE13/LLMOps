@@ -14,8 +14,8 @@ import { useAccountStore } from '@/stores/account'
 import AssistantAgentBackground from '@/assets/images/assistant-agent-background.png'
 import { Message } from '@arco-design/web-vue'
 import { QueueEvent } from '@/config'
-import HumanMessage from '@/views/space/apps/components/HumanMessage.vue'
-import AiMessage from '@/views/space/apps/components/AiMessage.vue'
+import HumanMessage from '@/components/HumanMessage.vue'
+import AiMessage from '@/components/AiMessage.vue'
 
 // 1.定义页面所需数据
 const query = ref('')
@@ -147,6 +147,12 @@ const handleSubmit = async () => {
         messages.value[0].answer += data?.thought
         messages.value[0].latency = data?.latency
         messages.value[0].total_token_count = data?.total_token_count
+      } else if (event === QueueEvent.error) {
+        // 5.15 事件为error，将错误信息(observation)填充到消息答案中进行展示
+        messages.value[0].answer = data?.observation
+      } else if (event === QueueEvent.timeout) {
+        // 5.16 事件为timeout，则人工提示超时信息
+        messages.value[0].answer = '当前Agent执行已超时，无法得到答案，请重试'
       } else {
         // 5.15 处理其他类型的事件，直接填充覆盖数据
         position += 1
@@ -171,8 +177,10 @@ const handleSubmit = async () => {
   })
 
   // 5.7 发起API请求获取建议问题列表
-  await handleGenerateSuggestedQuestions(message_id.value)
-  setTimeout(() => scroller.value && scroller.value.scrollToBottom(), 100)
+  if (message_id.value) {
+    await handleGenerateSuggestedQuestions(message_id.value)
+    setTimeout(() => scroller.value && scroller.value.scrollToBottom(), 100)
+  }
 }
 
 // 6.定义停止调试会话函数
@@ -224,7 +232,7 @@ onMounted(async () => {
           @scroll="handleScroll"
           class="h-full scrollbar-w-none"
         >
-          <template v-slot="{ item, index, active }">
+          <template v-slot="{ item, active }">
             <dynamic-scroller-item :item="item" :active="active" :data-index="item.id">
               <div class="flex flex-col gap-6 py-6">
                 <human-message :query="item.query" :account="accountStore.account" />

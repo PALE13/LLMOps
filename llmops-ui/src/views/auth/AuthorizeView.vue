@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { authorize } from '@/services/oauth'
-import { Message } from '@arco-design/web-vue'
+import { useAuthorize } from '@/hooks/use-oauth'
 import { useCredentialStore } from '@/stores/credential'
 
 // 1.定义页面所需的数据
 const route = useRoute()
 const router = useRouter()
 const credentialStore = useCredentialStore()
+const { authorization, handleAuthorize } = useAuthorize()
 
 onMounted(async () => {
   try {
     // 1.调用authorize接口进行登录
-    const resp = await authorize(route.params?.provider_name as string, route.query?.code as string)
-    Message.success('登录成功，正在跳转')
+    await handleAuthorize(String(route.params?.provider_name), String(route.query?.code ?? ''))
 
     // 2.更新用户授权数据并跳转到首页
-    credentialStore.update(resp.data)
+    credentialStore.update(authorization.value)
     await router.replace({ path: '/home' })
   } catch (error) {
     // 3.出现错误则重定向到登录页面

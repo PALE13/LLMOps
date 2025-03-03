@@ -1,0 +1,24 @@
+version: '1'
+services:
+  llmops-ui:
+    image: llmops-ui:0.1.0
+    build:
+      context: ../llmops-ui
+      dockerfile: Dockerfile
+    container_name: llmops-ui
+    restart: always
+    environment: []
+    ports:
+      - "5173:80"
+
+  llmops-redis:
+    image: redis:6-alpine
+    restart: always
+    container_name: llmops_redis
+    volumes:
+      - ./volumes/redis/data:/data
+    # 启动redis服务时配置
+    command: redis-server --requirepass 123456
+    ports:
+      - "6379:6379"
+

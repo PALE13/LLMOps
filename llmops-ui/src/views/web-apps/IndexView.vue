@@ -2,7 +2,7 @@
 // @ts-ignore
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { cloneDeep } from 'lodash'
 import { Message } from '@arco-design/web-vue'
@@ -19,8 +19,8 @@ import {
   useUpdateConversationIsPinned,
 } from '@/hooks/use-conversation'
 import UpdateNameModal from './components/UpdateNameModal.vue'
-import AiMessage from '@/views/space/apps/components/AiMessage.vue'
-import HumanMessage from '@/views/space/apps/components/HumanMessage.vue'
+import HumanMessage from '@/components/HumanMessage.vue'
+import AiMessage from '@/components/AiMessage.vue'
 import { useGenerateSuggestedQuestions } from '@/hooks/use-ai'
 import { QueueEvent } from '@/config'
 
@@ -63,6 +63,7 @@ const conversation = computed(() => {
     // 2.3 置顶会话查询不到数据，则查询非置顶数据
     return unpinned_conversations.value.find((item) => item.id === selectedConversation.value)
   }
+  return null
 })
 
 // 3.定义保存滚动高度函数
@@ -258,6 +259,12 @@ const handleSubmit = async () => {
         messages.value[0].answer += data?.thought
         messages.value[0].latency = data?.latency
         messages.value[0].total_token_count = data?.total_token_count
+      } else if (event === QueueEvent.error) {
+        // 5.15 事件为error，将错误信息(observation)填充到消息答案中进行展示
+        messages.value[0].answer = data?.observation
+      } else if (event === QueueEvent.timeout) {
+        // 5.16 事件为timeout，则人工提示超时信息
+        messages.value[0].answer = '当前Agent执行已超时，无法得到答案，请重试'
       } else {
         // 11.11 处理其他类型的事件，直接填充覆盖数据
         position += 1
@@ -298,7 +305,7 @@ const handleSubmit = async () => {
       }
     }
     // 11.16 判断是否开启建议问题生成，如果开启了则发起api请求获取数据
-    if (web_app.value?.app_config?.suggested_after_answer.enable) {
+    if (web_app.value?.app_config?.suggested_after_answer.enable && message_id.value) {
       await handleGenerateSuggestedQuestions(message_id.value)
       setTimeout(() => scroller.value && scroller.value.scrollToBottom(), 100)
     }
@@ -343,6 +350,12 @@ watch(
     } else if (newValue !== '') {
       // 15.3 选择了已有会话，获取对应会话的消息列表
       await loadConversationMessagesWithPage(newValue, true)
+      await nextTick(() => {
+        // 15.4 确保在视图更新完成后执行滚动操作
+        if (scroller.value) {
+          scroller.value.scrollToBottom()
+        }
+      })
     }
   },
   { immediate: true },
@@ -508,7 +521,7 @@ onMounted(async () => {
           @scroll="handleScroll"
           class="h-full scrollbar-w-none"
         >
-          <template v-slot="{ item, index, active }">
+          <template v-slot="{ item, active }">
             <dynamic-scroller-item :item="item" :active="active" :data-index="item.id">
               <div class="flex flex-col gap-6 py-6">
                 <human-message :query="item.query" :account="accountStore.account" />

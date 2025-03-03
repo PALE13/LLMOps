@@ -1,53 +1,70 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import {
-  createApiToolProvider,
-  deleteApiToolProvider,
-  getApiToolProvider,
-  getApiToolProvidersWithPage,
-  updateApiToolProvider,
-  validateOpenAPISchema,
-} from '@/services/api-tool'
-import { uploadImage } from '@/services/upload-file'
+  useCreateApiToolProvider,
+  useDeleteApiToolProvider,
+  useGetApiToolProvider,
+  useGetApiToolProvidersWithPage,
+  useUpdateApiToolProvider,
+  useValidateOpenAPISchema,
+} from '@/hooks/use-tool'
+import { useUploadImage } from '@/hooks/use-upload-file'
 import { type CreateApiToolProviderRequest } from '@/models/api-tool'
 import moment from 'moment/moment'
 import { typeMap } from '@/config'
-import { Form, Message, Modal, type ValidatedError } from '@arco-design/web-vue'
+import { type FileItem, Form, type ValidatedError } from '@arco-design/web-vue'
 
+// 1.定义额面所需数据
 const route = useRoute()
 const props = defineProps({
-  createType: {
-    type: String,
-    required: true,
-  },
+  createType: { type: String, required: true },
 })
-const emits = defineEmits(['update-create-type'])
-const providers = reactive<Array<any>>([])
-const paginator = reactive({
-  current_page: 1,
-  page_size: 20,
-  total_page: 0,
-  total_record: 0,
-})
-const form = reactive({
+const emits = defineEmits(['update:create-type'])
+const form = ref<{
+  fileList: FileItem[]
+  icon: string
+  name: string
+  openapi_schema: string
+  headers: Record<string, any>[]
+}>({
   fileList: [],
   icon: '',
   name: '',
   openapi_schema: '',
-  headers: [] as { key: string; value: string }[],
+  headers: [],
 })
+const { image_url, handleUploadImage } = useUploadImage()
+const {
+  loading: getApiToolProviderLoading,
+  api_tool_provider,
+  loadApiToolProvider,
+} = useGetApiToolProvider()
+const {
+  loading: getApiToolProvidersLoading,
+  paginator,
+  api_tool_providers,
+  loadApiToolProviders,
+} = useGetApiToolProvidersWithPage()
+const { handleDelete: handleDeleteApiToolProvider } = useDeleteApiToolProvider()
+const {
+  loading: updateApiToolProviderLoading,
+  handleUpdateApiToolProvider, //
+} = useUpdateApiToolProvider()
+const {
+  loading: createApiToolProviderLoading,
+  handleCreateApiToolProvider, //
+} = useCreateApiToolProvider()
+const { handleValidateOpenAPISchema } = useValidateOpenAPISchema()
 const formRef = ref<InstanceType<typeof Form>>()
 const showIdx = ref<number>(-1)
 const loading = ref<boolean>(false)
 const showUpdateModal = ref<boolean>(false)
-const showUpdateModalLoading = ref<boolean>(false)
-const submitLoading = ref<boolean>(false)
 const tools = computed(() => {
   try {
     // 1.解析openapi_schema数据
     const available_tools = []
-    const openapi_schema = JSON.parse(form.openapi_schema)
+    const openapi_schema = JSON.parse(form.value.openapi_schema)
 
     // 2.检测是否存在paths路径
     if ('paths' in openapi_schema) {
@@ -71,120 +88,55 @@ const tools = computed(() => {
       }
     }
     return available_tools
-  } catch (e) {}
-  return []
+  } catch (e) {
+    return []
+  }
 })
 
-// 加载更多数据
-const loadMoreData = async (init: boolean = false) => {
-  // 1.检测下是否需要加载数据
-  if (!init && paginator.current_page > paginator.total_page) return
-
-  // 2.加载更多数据并更新数据状态
-  try {
-    // 3.调用接口获取响应数据
-    loading.value = true
-    const resp = await getApiToolProvidersWithPage(
-      paginator.current_page,
-      paginator.page_size,
-      String(route.query?.search_word ?? ''),
-    )
-    const data = resp.data
-
-    // 4.更新分页器
-    paginator.current_page = data.paginator.current_page
-    paginator.page_size = data.paginator.page_size
-    paginator.total_page = data.paginator.total_page
-    paginator.total_record = data.paginator.total_record
-
-    // 5.判断是否存在更多数据
-    if (paginator.current_page <= paginator.total_page) {
-      paginator.current_page += 1
-    }
-
-    // 6.追加或者是覆盖数据
-    if (init) {
-      providers.splice(0, providers.length, ...data.list)
-    } else {
-      providers.push(...data.list)
-    }
-  } finally {
-    loading.value = false
-  }
-}
-
-// 初始化加载数据
-const initData = () => {
-  // 1.初始化分页器
-  paginator.current_page = 1
-  paginator.page_size = 20
-  paginator.total_page = 0
-  paginator.total_record = 0
-
-  // 2.调用数据加载完成初始化
-  loadMoreData(true)
-}
-
-// 滚动数据分页处理器
+// 2.定义滚动分页处理器
 const handleScroll = (event: UIEvent) => {
-  // 1.获取滚动距离、可滚动的最大距离、客户端/浏览器窗口的高度
+  // 2.1 获取滚动距离、可滚动的最大距离、客户端/浏览器窗口的高度
   const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLElement
 
-  // 2.判断是否滑动到底部
+  // 2.2 判断是否滑动到底部
   if (scrollTop + clientHeight >= scrollHeight - 10) {
-    if (loading.value) {
-      return
-    }
-    loadMoreData()
+    if (getApiToolProvidersLoading.value) return
+    loadApiToolProviders(false, String(route.query?.search_word ?? ''))
   }
 }
 
-// 打开更新模态窗
+// 3.定义打开更新模态窗
 const handleUpdate = async () => {
-  try {
-    // 1.获取当前显示的provider_id
-    showUpdateModalLoading.value = true
-    const provider_id = providers[showIdx.value]['id']
+  // 3.1 获取当前显示的provider_id
+  const provider_id = api_tool_providers.value[showIdx.value]['id']
 
-    // 2.根据拿到的id获取该工具提供商的详情信息
-    const resp = await getApiToolProvider(provider_id)
-    const data = resp.data
+  // 3.2 根据拿到的id获取该工具提供商的详情信息
+  await loadApiToolProvider(provider_id)
 
-    // 3.更新form表单数据
-    formRef.value?.resetFields()
-    form.fileList = [{ uid: '1', name: '插件图标', url: data.icon }]
-    form.icon = data.icon
-    form.name = data.name
-    form.openapi_schema = data.openapi_schema
-    form.headers = data.headers
-  } finally {
-    showUpdateModalLoading.value = false
-  }
+  // 3.3 更新form表单数据
+  formRef.value?.resetFields()
+  form.value.fileList = [{ uid: '1', name: '插件图标', url: api_tool_provider.value.icon }]
+  form.value.icon = api_tool_provider.value.icon
+  form.value.name = api_tool_provider.value.name
+  form.value.openapi_schema = api_tool_provider.value.openapi_schema
+  form.value.headers = api_tool_provider.value.headers
 
   showUpdateModal.value = true
 }
 
-// 删除工具提供者处理器
+// 4.定义删除工具提供者处理器
 const handleDelete = () => {
-  Modal.warning({
-    title: '删除这个工具?',
-    content: '删除工具是不可逆的。AI应用将无法再访问您的工具',
-    hideCancel: false,
-    onOk: async () => {
-      try {
-        // 1.点击确定后向API接口发起请求
-        const provider_id = providers[showIdx.value]['id']
-        const resp = await deleteApiToolProvider(provider_id)
-        Message.success(resp.message)
-      } finally {
-        // 2.关闭模态窗+抽屉
-        handleCancel()
-        showIdx.value = -1
+  // 4.1 提取选中数据条目的提供者id
+  const provider_id = api_tool_providers.value[showIdx.value]['id']
 
-        // 3.重新加载数据
-        await initData()
-      }
-    },
+  // 4.2 调用删除Api工具提供者处理器
+  handleDeleteApiToolProvider(provider_id, () => {
+    // 4.3 关闭模态窗+抽屉
+    handleCancel()
+    showIdx.value = -1
+
+    // 4.4 重新加载数据
+    loadApiToolProviders(true, String(route.query?.search_word ?? ''))
   })
 }
 
@@ -199,33 +151,24 @@ const handleSubmit = async ({
   // 1.如果存在错误则直接结束
   if (errors) return
 
-  try {
-    // 2.将模态窗按钮设置成加载状态，避免重复点击
-    submitLoading.value = true
-
-    // 3.根据不同的类型发起不同的请求
-    if (props.createType === 'tool') {
-      // 4.调用接口发起创建请求
-      const resp = await createApiToolProvider(values as CreateApiToolProviderRequest)
-      Message.success(resp.message)
-    } else if (showUpdateModal.value) {
-      // 5.调用接口发起更新API工具请求
-      const resp = await updateApiToolProvider(
-        providers[showIdx.value]['id'],
-        values as CreateApiToolProviderRequest,
-      )
-      Message.success(resp.message)
-    }
-
-    // 6.执行后续操作，涵盖隐藏模态窗、隐藏抽屉
-    handleCancel()
-    showIdx.value = -1
-  } finally {
-    submitLoading.value = false
+  // 2.根据不同的类型发起不同的请求
+  if (props.createType === 'tool') {
+    // 3.调用处理器发起创建请求
+    await handleCreateApiToolProvider(values as CreateApiToolProviderRequest)
+  } else if (showUpdateModal.value) {
+    // 4.调用接口发起更新API工具请求
+    await handleUpdateApiToolProvider(
+      api_tool_providers.value[showIdx.value]['id'],
+      values as CreateApiToolProviderRequest,
+    )
   }
 
-  // 7.重新加载数据
-  await initData()
+  // 5.执行后续操作，涵盖隐藏模态窗、隐藏抽屉
+  handleCancel()
+  showIdx.value = -1
+
+  // 6.重新加载数据
+  await loadApiToolProviders(true, String(route.query?.search_word ?? ''))
 }
 
 // 取消显示模态窗处理器
@@ -234,21 +177,28 @@ const handleCancel = () => {
   formRef.value?.resetFields()
 
   // 2.隐藏表单模态窗
-  emits('update-create-type', '')
+  emits('update:create-type', '')
   showUpdateModal.value = false
 }
 
 // 页面DOM加载完毕初始化数据
-onMounted(async () => {
-  await initData()
-})
+onMounted(() => loadApiToolProviders(true, String(route.query?.search_word ?? '')))
 
 // 监听路由query变化
 watch(
   () => route.query?.search_word,
-  async () => {
-    await initData()
+  (newValue) => {
+    loadApiToolProviders(true, String(newValue))
   },
+)
+
+// 监听路由create_type变化
+watch(
+  () => route.query?.create_type,
+  (newValue) => {
+    if (newValue === 'tool') emits('update:create-type', 'tool')
+  },
+  { immediate: true },
 )
 </script>
 
@@ -261,8 +211,8 @@ watch(
     <!-- 底部插件列表 -->
     <a-row :gutter="[20, 20]" class="flex-1">
       <!-- 有数据的UI状态 -->
-      <a-col v-for="(provider, idx) in providers" :key="provider.name" :span="6">
-        <a-card hoverable class="cursor-pointer rounded-lg" @click="showIdx = idx">
+      <a-col v-for="(provider, idx) in api_tool_providers" :key="provider.name" :span="6">
+        <a-card hoverable class="cursor-pointer rounded-lg" @click="showIdx = Number(idx)">
           <!-- 顶部提供商名称 -->
           <div class="flex items-center gap-3 mb-3">
             <!-- 左侧图标 -->
@@ -285,14 +235,14 @@ watch(
               <icon-user />
             </a-avatar>
             <div class="text-xs text-gray-400">
-              慕小课 · 编辑时间
+              管理员 · 编辑时间
               {{ moment(provider.created_at * 1000).format('MM-DD HH:mm') }}
             </div>
           </div>
         </a-card>
       </a-col>
       <!-- 没数据的UI状态 -->
-      <a-col v-if="providers.length === 0" :span="24">
+      <a-col v-if="api_tool_providers.length === 0" :span="24">
         <a-empty
           description="没有可用的API插件"
           class="h-[400px] flex flex-col items-center justify-center"
@@ -327,24 +277,25 @@ watch(
         <!-- 顶部提供商名称 -->
         <div class="flex items-center gap-3 mb-3">
           <!-- 左侧图标 -->
-          <a-avatar :size="40" shape="square" :image-url="providers[showIdx].icon" />
+          <a-avatar :size="40" shape="square" :image-url="api_tool_providers[showIdx].icon" />
           <!-- 右侧工具信息 -->
           <div class="flex flex-col">
             <div class="text-base text-gray-900 font-bold">
-              {{ providers[showIdx].name }}
+              {{ api_tool_providers[showIdx].name }}
             </div>
             <div class="text-xs text-gray-500 line-clamp-1">
-              提供商 {{ providers[showIdx].name }} · {{ providers[showIdx].tools.length }} 插件
+              提供商 {{ api_tool_providers[showIdx].name }} ·
+              {{ api_tool_providers[showIdx].tools.length }} 插件
             </div>
           </div>
         </div>
         <!-- 提供商的描述信息 -->
         <div class="leading-[18px] text-gray-500 mb-4">
-          {{ providers[showIdx].description }}
+          {{ api_tool_providers[showIdx].description }}
         </div>
         <!-- 编辑按钮 -->
         <a-button
-          :loading="showUpdateModalLoading"
+          :loading="getApiToolProviderLoading"
           type="dashed"
           long
           class="mb-2 rounded-lg"
@@ -359,10 +310,12 @@ watch(
         <hr class="my-4" />
         <!-- 提供者工具 -->
         <div class="flex flex-col gap-2">
-          <div class="text-xs text-gray-500">包含 {{ providers[showIdx].tools.length }} 个工具</div>
+          <div class="text-xs text-gray-500">
+            包含 {{ api_tool_providers[showIdx].tools.length }} 个工具
+          </div>
           <!-- 工具列表 -->
           <a-card
-            v-for="tool in providers[showIdx].tools"
+            v-for="tool in api_tool_providers[showIdx].tools"
             :key="tool.name"
             class="cursor-pointer flex flex-col rounded-xl"
           >
@@ -431,15 +384,21 @@ watch(
               v-model:file-list="form.fileList"
               image-preview
               :custom-request="
-                async (option) => {
-                  const { fileItem, onSuccess, onError } = option
-                  const resp = await uploadImage(fileItem.file as File)
-                  form.icon = resp.data.image_url
-                  onSuccess(resp)
+                (option) => {
+                  const uploadTask = async () => {
+                    const { fileItem, onSuccess, onError } = option
+                    await handleUploadImage(fileItem.file as File)
+                    form.icon = image_url
+                    onSuccess(image_url)
+                  }
+
+                  uploadTask()
+
+                  return {}
                 }
               "
               :on-before-remove="
-                () => {
+                async (fileItem) => {
                   form.icon = ''
                   return true
                 }
@@ -470,10 +429,10 @@ watch(
               :auto-size="{ minRows: 4, maxRows: 6 }"
               placeholder="在此处输入您的 OpenAPI Schema"
               @blur="
-                async () => {
+                () => {
                   if (form.openapi_schema.trim() !== '') {
                     // 调用验证openapi_schema接口
-                    await validateOpenAPISchema(form.openapi_schema)
+                    handleValidateOpenAPISchema(form.openapi_schema)
                   }
                 }
               "
@@ -574,7 +533,7 @@ watch(
             <a-space :size="16">
               <a-button class="rounded-lg" @click="handleCancel">取消</a-button>
               <a-button
-                :loading="submitLoading"
+                :loading="updateApiToolProviderLoading || createApiToolProviderLoading"
                 type="primary"
                 html-type="submit"
                 class="rounded-lg"

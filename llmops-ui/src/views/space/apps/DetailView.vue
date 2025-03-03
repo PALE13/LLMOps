@@ -6,13 +6,25 @@ import PreviewDebugHeader from './components/PreviewDebugHeader.vue'
 import AgentAppAbility from './components/AgentAppAbility.vue'
 import PreviewDebugChat from './components/PreviewDebugChat.vue'
 import ModelConfig from './components/ModelConfig.vue'
+import { onMounted } from 'vue'
 
 // 1.页面基础数据定义
 const route = useRoute()
 const props = defineProps({
-  app: { type: Object, default: {}, required: true },
+  app: {
+    type: Object,
+    default: () => {
+      return {}
+    },
+    required: true,
+  },
 })
-const { draftAppConfigForm } = useGetDraftAppConfig(String(route.params?.app_id))
+const { draftAppConfigForm, loadDraftAppConfig } = useGetDraftAppConfig()
+
+// 2.页面DOM加载完毕时执行函数
+onMounted(async () => {
+  await loadDraftAppConfig(String(route.params?.app_id))
+})
 </script>
 
 <template>
@@ -41,7 +53,7 @@ const { draftAppConfigForm } = useGetDraftAppConfig(String(route.params?.app_id)
           </div>
           <!-- 右侧应用能力 -->
           <agent-app-ability
-            :draft_app_config="draftAppConfigForm"
+            v-model:draft_app_config="draftAppConfigForm"
             :app_id="String(route.params?.app_id)"
           />
         </div>

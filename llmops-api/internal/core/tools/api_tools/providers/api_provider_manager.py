@@ -30,7 +30,6 @@ class ApiProviderManager(BaseModel):
                 ParameterIn.COOKIE: {},
                 ParameterIn.REQUEST_BODY: {}
             }
-
             # 2.更改参数结构映射
             parameter_map = {parameter.get("name"): parameter for parameter in tool_entity.parameters}
             header_map = {header.get("key"): header.get("value") for header in tool_entity.headers}
